@@ -1,0 +1,791 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Glacio Klimaattechniek</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;500;700;800;900&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<style>
+  /* ---------- tokens ---------- */
+  :root{
+    --bg:#eef5fa;
+    --surface:#ffffff;
+    --surface-2:#dde9f1;
+    --ink:#0b1b28;
+    --muted:#4f6577;
+    --border:#c7dae6;
+    --accent:#1c7aa8;
+    --accent-bright:#0ea5c9;
+    --ice:#3fb9de;
+    --shadow-1:0 1px 2px rgba(9,23,34,.07),0 1px 1px rgba(9,23,34,.05);
+    --shadow-2:0 20px 40px -18px rgba(9,23,34,.28);
+    --hero-bg:#0a1620;
+    --hero-surface:#102232;
+    --hero-surface-2:#153048;
+    --hero-ink:#eaf5fb;
+    --hero-muted:#8fa9ba;
+    --hero-border:#1e3c50;
+    --font-display:'Unbounded', system-ui, sans-serif;
+    --font-body:'IBM Plex Sans', system-ui, sans-serif;
+    --font-mono:'IBM Plex Mono', ui-monospace, monospace;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#081019;
+      --surface:#0f2331;
+      --surface-2:#14364a;
+      --ink:#eaf4fa;
+      --muted:#93aebd;
+      --border:#1f3d4f;
+      --accent:#4db8e0;
+      --accent-bright:#79d6f2;
+      --ice:#8fe6ff;
+      --shadow-1:0 1px 2px rgba(0,0,0,.5),0 1px 1px rgba(0,0,0,.35);
+      --shadow-2:0 20px 44px -18px rgba(0,0,0,.6);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#081019;
+    --surface:#0f2331;
+    --surface-2:#14364a;
+    --ink:#eaf4fa;
+    --muted:#93aebd;
+    --border:#1f3d4f;
+    --accent:#4db8e0;
+    --accent-bright:#79d6f2;
+    --ice:#8fe6ff;
+    --shadow-1:0 1px 2px rgba(0,0,0,.5),0 1px 1px rgba(0,0,0,.35);
+    --shadow-2:0 20px 44px -18px rgba(0,0,0,.6);
+  }
+
+  *,*::before,*::after{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--font-body);
+    font-size:16px;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  img,svg{ display:block; max-width:100%; }
+  a{ color:inherit; }
+  h1,h2,h3{ font-family:var(--font-display); text-wrap:balance; margin:0; }
+  p{ margin:0; }
+  .container{ width:100%; max-width:1180px; margin-inline:auto; padding-inline:clamp(1.25rem,4vw,2.5rem); }
+  .eyebrow{
+    font-family:var(--font-mono); font-size:.72rem; font-weight:600;
+    letter-spacing:.14em; text-transform:uppercase; color:var(--accent);
+  }
+  .btn{
+    display:inline-flex; align-items:center; gap:.5rem;
+    font-family:var(--font-body); font-weight:600; font-size:.95rem;
+    padding:.85rem 1.4rem; border-radius:999px; border:1px solid transparent;
+    cursor:pointer; text-decoration:none; transition:transform .15s ease, box-shadow .15s ease, background .15s ease;
+  }
+  .btn:active{ transform:translateY(1px); }
+  .btn:focus-visible{ outline:2px solid var(--accent-bright); outline-offset:3px; }
+  .btn--primary{ background:var(--accent); color:#fff; box-shadow:var(--shadow-1); }
+  .btn--primary:hover{ background:var(--accent-bright); box-shadow:var(--shadow-2); }
+  .btn--ghost{ background:transparent; border-color:var(--hero-border); color:var(--hero-ink); }
+  .btn--ghost:hover{ border-color:var(--ice); color:var(--ice); }
+  .btn--outline{ background:transparent; border-color:var(--border); color:var(--ink); }
+  .btn--outline:hover{ border-color:var(--accent); color:var(--accent); }
+
+  /* ---------- header ---------- */
+  .site-header{
+    position:sticky; top:0; z-index:40;
+    background:color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--border);
+  }
+  .site-header__row{ display:flex; align-items:center; justify-content:space-between; gap:1.5rem; padding-block:.9rem; }
+  .brand{ display:flex; align-items:center; gap:.6rem; text-decoration:none; }
+  .brand__mark{
+    width:34px; height:34px; border-radius:9px;
+    background:linear-gradient(155deg, var(--ice), var(--accent));
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--font-display); font-weight:900; color:#04141d; font-size:1rem;
+  }
+  .brand__word{ font-family:var(--font-display); font-weight:800; font-size:1.05rem; letter-spacing:.01em; color:var(--ink); }
+  .nav__links{ display:flex; align-items:center; gap:1.9rem; list-style:none; margin:0; padding:0; }
+  .nav__links a{
+    font-size:.9rem; font-weight:500; text-decoration:none; color:var(--muted);
+    padding-block:.3rem; border-bottom:2px solid transparent; transition:color .15s ease, border-color .15s ease;
+  }
+  .nav__links a:hover, .nav__links a.is-active{ color:var(--ink); border-color:var(--accent); }
+  .header__actions{ display:flex; align-items:center; gap:.7rem; }
+  .theme-toggle{
+    width:38px; height:38px; border-radius:999px; border:1px solid var(--border);
+    background:var(--surface); color:var(--ink); cursor:pointer; display:flex; align-items:center; justify-content:center;
+    font-size:1rem;
+  }
+  .theme-toggle:focus-visible{ outline:2px solid var(--accent-bright); outline-offset:2px; }
+  @media (max-width:820px){ .nav__links{ display:none; } }
+
+  /* ---------- hero ---------- */
+  .hero{ background:var(--hero-bg); color:var(--hero-ink); overflow:clip; position:relative; }
+  .hero__glow{
+    position:absolute; inset:-20% -10% auto -10%; height:70%;
+    background:radial-gradient(60% 60% at 30% 20%, rgba(63,185,222,.16), transparent 70%);
+    pointer-events:none;
+  }
+  .hero__inner{
+    position:relative; display:grid; grid-template-columns:1.05fr 1fr; gap:3rem; align-items:center;
+    padding-block:clamp(3.5rem,8vw,6.5rem);
+  }
+  @media (max-width:900px){ .hero__inner{ grid-template-columns:1fr; padding-block:3rem 2.5rem; } }
+  .hero__title{ font-size:clamp(2.3rem,4.4vw,3.6rem); font-weight:800; line-height:1.04; letter-spacing:-.01em; }
+  .hero__title em{ font-style:normal; color:var(--ice); }
+  .hero__lede{ margin-top:1.1rem; max-width:46ch; color:var(--hero-muted); font-size:1.08rem; }
+  .hero__ctas{ display:flex; flex-wrap:wrap; gap:.85rem; margin-top:2rem; }
+  .hero__meta{ margin-top:2.6rem; display:flex; gap:2rem; font-family:var(--font-mono); font-size:.78rem; color:var(--hero-muted); }
+  .hero__meta b{ display:block; color:var(--hero-ink); font-size:1.05rem; font-family:var(--font-body); font-weight:700; }
+
+  /* ---------- 3D unit component ---------- */
+  .stage{ perspective:1500px; }
+  .rig{
+    position:relative; width:100%; height:100%; transform-style:preserve-3d;
+    transition:transform .25s ease-out;
+    will-change:transform;
+  }
+  .box3d{
+    position:relative; width:var(--w); height:var(--h); transform-style:preserve-3d;
+    transform: rotateX(-16deg) rotateY(26deg);
+  }
+  .box3d__face{ position:absolute; top:50%; left:50%; transform-style:preserve-3d; }
+  .box3d__front{
+    width:var(--w); height:var(--h); margin:calc(var(--h) / -2) 0 0 calc(var(--w) / -2);
+    transform:translateZ(calc(var(--d) / 2));
+    border-radius:var(--r,14px);
+    background:linear-gradient(160deg, #f6fbfd, #d7e9f1);
+    box-shadow:inset 0 0 0 1px rgba(10,30,45,.14), inset 0 -10px 18px -12px rgba(10,30,45,.18);
+  }
+  .box3d__top{
+    width:var(--w); height:var(--d); margin:calc(var(--d) / -2) 0 0 calc(var(--w) / -2);
+    transform:rotateX(90deg) translateZ(calc(var(--h) / 2));
+    border-radius:var(--r,14px) var(--r,14px) 0 0;
+    background:linear-gradient(160deg,#ffffff,#c3d9e4);
+  }
+  .box3d__side{
+    width:var(--d); height:var(--h); margin:calc(var(--h) / -2) 0 0 calc(var(--d) / -2);
+    transform:rotateY(90deg) translateZ(calc(var(--w) / 2));
+    border-radius:0 var(--r,14px) var(--r,14px) 0;
+    background:linear-gradient(160deg,#bcd4e0,#9db9c8);
+  }
+  :root[data-theme="dark"] .box3d__front{ background:linear-gradient(160deg,#284b60,#183246); box-shadow:inset 0 0 0 1px rgba(180,225,240,.14), inset 0 -10px 18px -12px rgba(0,0,0,.4); }
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .box3d__front{ background:linear-gradient(160deg,#284b60,#183246); box-shadow:inset 0 0 0 1px rgba(180,225,240,.14), inset 0 -10px 18px -12px rgba(0,0,0,.4);} }
+  .led{
+    position:absolute; width:6px; height:6px; border-radius:50%; top:14%; right:10%;
+    background:var(--ice); box-shadow:0 0 6px 1px var(--ice);
+    animation:blink 3.4s ease-in-out infinite;
+  }
+  .vent{
+    position:absolute; left:9%; right:9%; bottom:12%; height:16%;
+    border-radius:4px; background:rgba(10,30,45,.16); overflow:hidden;
+  }
+  :root[data-theme="dark"] .vent{ background:rgba(0,0,0,.4); }
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .vent{ background:rgba(0,0,0,.4);} }
+  .vent__flap{
+    position:absolute; inset:8% 6%; border-radius:3px;
+    background:linear-gradient(180deg, var(--accent-bright), var(--accent));
+    transform-origin:top center;
+    animation:flap 4.6s ease-in-out infinite;
+  }
+  .fan-ring{
+    position:absolute; left:50%; top:44%; width:62%; aspect-ratio:1;
+    transform:translate(-50%,-50%); border-radius:50%;
+    background:radial-gradient(circle, rgba(255,255,255,.08), transparent 70%);
+    box-shadow:inset 0 0 0 3px rgba(10,30,45,.2), inset 0 0 0 8px rgba(10,30,45,.06);
+  }
+  .fan-blade{
+    position:absolute; inset:14%; border-radius:50%;
+    background:repeating-conic-gradient(from 0deg, var(--accent) 0deg 16deg, transparent 16deg 90deg);
+    animation:spin 2.6s linear infinite;
+    opacity:.85;
+  }
+  .fan-hub{ position:absolute; inset:44%; border-radius:50%; background:var(--ink); opacity:.7; }
+  .grille-lines{
+    position:absolute; left:8%; right:8%; bottom:10%; height:14%;
+    background:repeating-linear-gradient(90deg, rgba(10,30,45,.35) 0 2px, transparent 2px 8px);
+    border-radius:3px;
+  }
+  @keyframes flap{ 0%,100%{ transform:rotateX(0deg);} 50%{ transform:rotateX(-42deg);} }
+  @keyframes spin{ to{ transform:rotate(360deg); } }
+  @keyframes blink{ 0%,100%{ opacity:.4;} 50%{ opacity:1;} }
+  @keyframes idle-float{
+    0%,100%{ transform:translateY(0) rotate3d(0,1,0,0deg); }
+    50%{ transform:translateY(-8px) rotate3d(0,1,0,4deg); }
+  }
+  .idle{ animation:idle-float 7s ease-in-out infinite; }
+
+  .hero__scene{ position:relative; height:clamp(300px,34vw,420px); }
+  .hero__stage{ perspective:1800px; height:100%; }
+  .hero__rig{ position:relative; height:100%; transform-style:preserve-3d; transition:transform .2s ease-out; }
+  .unit-slot{ position:absolute; }
+  .unit-slot--indoor{ left:6%; top:14%; --w:220px; --h:80px; --d:56px; animation-delay:0s; }
+  .unit-slot--outdoor{ right:8%; bottom:8%; --w:150px; --h:130px; --d:120px; animation-delay:.6s; }
+  .pipe{ position:absolute; inset:0; overflow:visible; pointer-events:none; }
+  .pipe path{ fill:none; stroke:var(--ice); stroke-width:2; stroke-dasharray:6 7; opacity:.55; animation:flow 1.4s linear infinite; }
+  @keyframes flow{ to{ stroke-dashoffset:-26; } }
+  .mist{ position:absolute; border-radius:50%; filter:blur(30px); opacity:.5; background:radial-gradient(circle, rgba(63,185,222,.5), transparent 70%); animation:drift 12s ease-in-out infinite; }
+  .mist--a{ width:180px; height:180px; left:2%; top:0%; }
+  .mist--b{ width:140px; height:140px; right:6%; bottom:4%; animation-delay:-6s; }
+  @keyframes drift{ 0%,100%{ transform:translate(0,0);} 50%{ transform:translate(14px,-10px);} }
+
+  /* ---------- trust strip ---------- */
+  .trust{ border-bottom:1px solid var(--border); }
+  .trust__grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:1.5rem; padding-block:2.4rem; }
+  @media (max-width:820px){ .trust__grid{ grid-template-columns:repeat(2,1fr); } }
+  .trust__item{ display:flex; gap:.8rem; align-items:flex-start; }
+  .trust__tag{
+    flex:none; font-family:var(--font-mono); font-size:.68rem; font-weight:600;
+    padding:.3rem .5rem; border-radius:6px; border:1px solid var(--border); color:var(--accent);
+    letter-spacing:.04em;
+  }
+  .trust__item p{ font-size:.88rem; color:var(--muted); }
+  .trust__item strong{ display:block; color:var(--ink); font-size:.92rem; margin-bottom:.15rem; }
+
+  /* ---------- section shell ---------- */
+  section{ padding-block:clamp(3.5rem,7vw,5.5rem); }
+  .section__head{ max-width:56ch; margin-bottom:2.6rem; }
+  .section__head h2{ font-size:clamp(1.7rem,3vw,2.3rem); margin-top:.6rem; }
+  .section__head p{ margin-top:.8rem; color:var(--muted); font-size:1.02rem; }
+
+  /* ---------- models ---------- */
+  .models{ background:var(--surface); }
+  .model-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(258px,1fr)); gap:1.3rem; }
+  .model-card{
+    background:var(--bg); border:1px solid var(--border); border-radius:18px;
+    padding:1.4rem 1.4rem 1.6rem; box-shadow:var(--shadow-1); transition:box-shadow .2s ease, border-color .2s ease;
+  }
+  .model-card:hover{ box-shadow:var(--shadow-2); border-color:var(--accent); }
+  .model-card__stage{ height:110px; perspective:900px; margin-bottom:.6rem; }
+  .model-card__tier{
+    font-family:var(--font-mono); font-size:.66rem; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--accent); font-weight:600;
+  }
+  .model-card__name{ font-family:var(--font-display); font-size:1.15rem; font-weight:700; margin-top:.3rem; }
+  .model-card__specs{ list-style:none; margin:.9rem 0 1.1rem; padding:0; display:grid; gap:.4rem; }
+  .model-card__specs li{
+    display:flex; justify-content:space-between; font-size:.82rem; color:var(--muted);
+    font-family:var(--font-mono); border-bottom:1px dashed var(--border); padding-bottom:.35rem;
+  }
+  .model-card__specs li span:last-child{ color:var(--ink); font-variant-numeric:tabular-nums; }
+  .model-card__price{ font-family:var(--font-mono); font-size:1.05rem; font-weight:600; font-variant-numeric:tabular-nums; }
+  .model-card__price small{ display:block; font-family:var(--font-body); font-weight:400; color:var(--muted); font-size:.72rem; }
+  .model-card__cta{
+    margin-top:1rem; width:100%; justify-content:center; font-size:.85rem; padding:.65rem 1rem;
+  }
+
+  /* ---------- pricing ---------- */
+  .pricing{ background:var(--hero-bg); color:var(--hero-ink); }
+  .pricing .section__head p{ color:var(--hero-muted); }
+  .pricing .eyebrow{ color:var(--ice); }
+  .price-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:1.3rem; }
+  @media (max-width:900px){ .price-grid{ grid-template-columns:1fr; } }
+  .price-card{
+    background:var(--hero-surface); border:1px solid var(--hero-border); border-radius:18px; padding:1.8rem;
+    display:flex; flex-direction:column; gap:1rem;
+  }
+  .price-card__label{ font-family:var(--font-mono); font-size:.7rem; letter-spacing:.1em; text-transform:uppercase; color:var(--ice); }
+  .price-card__title{ font-family:var(--font-display); font-size:1.3rem; font-weight:700; }
+  .price-card__amount{ font-family:var(--font-mono); font-size:1.9rem; font-weight:600; font-variant-numeric:tabular-nums; }
+  .price-card__amount small{ font-size:.8rem; font-family:var(--font-body); color:var(--hero-muted); font-weight:400; }
+  .price-card ul{ list-style:none; margin:0; padding:0; display:grid; gap:.55rem; }
+  .price-card li{ font-size:.88rem; color:var(--hero-muted); padding-left:1.1rem; position:relative; }
+  .price-card li::before{ content:''; position:absolute; left:0; top:.5em; width:6px; height:6px; border-radius:50%; background:var(--ice); }
+  .price-note{ margin-top:2rem; font-size:.82rem; color:var(--hero-muted); font-family:var(--font-mono); }
+
+  /* ---------- werkwijze ---------- */
+  .steps{ background:var(--surface); }
+  .step-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:1.3rem; }
+  @media (max-width:900px){ .step-grid{ grid-template-columns:repeat(2,1fr); } }
+  @media (max-width:560px){ .step-grid{ grid-template-columns:1fr; } }
+  .step{ position:relative; padding-top:2.4rem; }
+  .step__num{ font-family:var(--font-mono); font-size:.85rem; color:var(--accent); font-weight:600; }
+  .step h3{ font-size:1.05rem; margin-top:.5rem; }
+  .step p{ margin-top:.5rem; font-size:.88rem; color:var(--muted); }
+
+  /* ---------- intake ---------- */
+  .intake{ background:var(--bg); }
+  .intake__wrap{ display:grid; grid-template-columns:.85fr 1.15fr; gap:3rem; align-items:start; }
+  @media (max-width:900px){ .intake__wrap{ grid-template-columns:1fr; } }
+  .intake__side h2{ font-size:clamp(1.7rem,3vw,2.2rem); margin-top:.6rem; }
+  .intake__side p{ margin-top:.9rem; color:var(--muted); }
+  .intake__contact{ margin-top:1.8rem; display:grid; gap:.7rem; font-family:var(--font-mono); font-size:.85rem; }
+  .intake__contact a{ color:var(--accent); text-decoration:none; }
+  .intake__contact a:hover{ text-decoration:underline; }
+
+  .form-card{ background:var(--surface); border:1px solid var(--border); border-radius:20px; padding:clamp(1.5rem,3vw,2.2rem); box-shadow:var(--shadow-1); }
+  .field-row{ display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+  @media (max-width:560px){ .field-row{ grid-template-columns:1fr; } }
+  .field{ display:flex; flex-direction:column; gap:.4rem; margin-bottom:1.1rem; }
+  .field label{ font-size:.8rem; font-weight:600; color:var(--muted); }
+  .field input, .field select, .field textarea{
+    font-family:var(--font-body); font-size:.95rem; padding:.7rem .85rem; border-radius:10px;
+    border:1px solid var(--border); background:var(--bg); color:var(--ink);
+  }
+  .field input:focus, .field select:focus, .field textarea:focus{ outline:2px solid var(--accent-bright); outline-offset:1px; }
+  .field textarea{ resize:vertical; min-height:88px; }
+  .checks{ display:flex; flex-wrap:wrap; gap:.6rem 1.2rem; }
+  .checks label{ display:flex; align-items:center; gap:.45rem; font-size:.85rem; font-weight:400; color:var(--ink); }
+  .checks input{ accent-color:var(--accent); }
+  .form-submit{ width:100%; justify-content:center; margin-top:.4rem; }
+  .form-hint{ margin-top:.8rem; font-size:.78rem; color:var(--muted); }
+
+  .confirm{ display:none; text-align:center; padding:2rem 1rem; }
+  .confirm.is-visible{ display:block; }
+  .confirm__badge{
+    width:52px; height:52px; border-radius:50%; margin:0 auto 1rem; background:var(--accent);
+    display:flex; align-items:center; justify-content:center; color:#fff; font-size:1.3rem;
+  }
+  .confirm h3{ font-size:1.2rem; }
+  .confirm p{ margin-top:.6rem; color:var(--muted); font-size:.92rem; }
+  .form-card.is-submitted form{ display:none; }
+
+  /* ---------- footer ---------- */
+  footer{ border-top:1px solid var(--border); padding-block:2.4rem; }
+  .footer__row{ display:flex; flex-wrap:wrap; justify-content:space-between; gap:1rem; align-items:center; }
+  .footer__note{ font-size:.78rem; color:var(--muted); max-width:52ch; margin-top:.8rem; font-family:var(--font-mono); }
+
+  @media (prefers-reduced-motion: reduce){
+    *, *::before, *::after{ animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important; }
+    html{ scroll-behavior:auto; }
+  }
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container site-header__row">
+    <a class="brand" href="#top">
+      <span class="brand__mark">G</span>
+      <span class="brand__word">GLACIO</span>
+    </a>
+    <ul class="nav__links" id="navLinks">
+      <li><a href="#modellen">Modellen</a></li>
+      <li><a href="#tarieven">Diensten &amp; tarieven</a></li>
+      <li><a href="#werkwijze">Werkwijze</a></li>
+      <li><a href="#intake">Plan intake</a></li>
+    </ul>
+    <div class="header__actions">
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Wissel tussen licht en donker thema">◐</button>
+      <a class="btn btn--primary" href="#intake" style="padding:.6rem 1.1rem;font-size:.85rem;">Plan intake</a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero" id="hero">
+    <div class="hero__glow"></div>
+    <div class="container hero__inner">
+      <div>
+        <p class="eyebrow">Airco-installatie · binnen &amp; buiten</p>
+        <h1 class="hero__title">Koeling die net zo <em>strak</em> oogt als hij presteert.</h1>
+        <p class="hero__lede">Glacio ontwerpt, levert en plaatst airco-systemen voor woning en bedrijf — van gratis intake tot jaarlijks onderhoud, altijd met een vaste prijs vooraf.</p>
+        <div class="hero__ctas">
+          <a class="btn btn--primary" href="#intake">Plan gratis intake</a>
+          <a class="btn btn--ghost" href="#modellen">Bekijk de 8 modellen</a>
+        </div>
+        <div class="hero__meta">
+          <div><b>5 jaar</b>garantie op plaatsing</div>
+          <div><b>&lt;5 dagen</b>gemiddelde doorlooptijd</div>
+          <div><b>F-gassen</b>gecertificeerd</div>
+        </div>
+      </div>
+      <div class="hero__scene">
+        <div class="mist mist--a"></div>
+        <div class="mist mist--b"></div>
+        <div class="hero__stage">
+          <div class="hero__rig" id="heroRig">
+            <svg class="pipe" viewBox="0 0 100 100" preserveAspectRatio="none">
+              <path d="M 34 30 C 55 30, 55 60, 78 66" vector-effect="non-scaling-stroke"></path>
+            </svg>
+            <div class="unit-slot unit-slot--indoor idle">
+              <div class="box3d" style="--w:220px;--h:80px;--d:56px;--r:16px;">
+                <div class="box3d__face box3d__top"></div>
+                <div class="box3d__face box3d__side"></div>
+                <div class="box3d__face box3d__front">
+                  <span class="led"></span>
+                  <div class="vent"><div class="vent__flap"></div></div>
+                </div>
+              </div>
+            </div>
+            <div class="unit-slot unit-slot--outdoor idle">
+              <div class="box3d" style="--w:150px;--h:130px;--d:120px;--r:12px;">
+                <div class="box3d__face box3d__top"></div>
+                <div class="box3d__face box3d__side"></div>
+                <div class="box3d__face box3d__front">
+                  <div class="fan-ring"><div class="fan-blade"></div><div class="fan-hub"></div></div>
+                  <div class="grille-lines"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="trust">
+    <div class="container trust__grid">
+      <div class="trust__item">
+        <span class="trust__tag">F-GAS</span>
+        <p><strong>Erkend installateur</strong>Gecertificeerde monteurs, conform Europese F-gassenregelgeving.</p>
+      </div>
+      <div class="trust__item">
+        <span class="trust__tag">VAST</span>
+        <p><strong>Prijs vooraf</strong>Na de gratis intake weet u exact wat u betaalt — geen verrassingen achteraf.</p>
+      </div>
+      <div class="trust__item">
+        <span class="trust__tag">&lt;5D</span>
+        <p><strong>Snel geplaatst</strong>Meestal binnen vijf werkdagen na akkoord operationeel.</p>
+      </div>
+      <div class="trust__item">
+        <span class="trust__tag">5J</span>
+        <p><strong>5 jaar garantie</strong>Op de volledige installatie, binnen- en buitenunit.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="models" id="modellen">
+    <div class="container">
+      <div class="section__head">
+        <p class="eyebrow">Het assortiment</p>
+        <h2>Acht modellen, één vaste kwaliteit.</h2>
+        <p>Van compacte wandunit tot multi-split voor twee ruimtes — elk Glacio-model wordt op maat geadviseerd tijdens de intake.</p>
+      </div>
+      <div class="model-grid" id="modelGrid"></div>
+    </div>
+  </section>
+
+  <section class="pricing" id="tarieven">
+    <div class="container">
+      <div class="section__head">
+        <p class="eyebrow">Diensten &amp; tarieven</p>
+        <h2>Drie diensten, telkens een vaste richtprijs.</h2>
+        <p>De definitieve prijs bepalen we samen tijdens de gratis intake, op basis van uw model, ruimte en leidinglengte.</p>
+      </div>
+      <div class="price-grid">
+        <div class="price-card">
+          <span class="price-card__label">Plaatsing · binnen</span>
+          <h3 class="price-card__title">Binnenunit monteren</h3>
+          <p class="price-card__amount">€ 349<small>vanaf, incl. btw</small></p>
+          <ul>
+            <li>Montage op wandconsole</li>
+            <li>Doorvoer &amp; afvoer condenswater</li>
+            <li>Elektrische aansluiting</li>
+            <li>Instellen &amp; testen</li>
+          </ul>
+        </div>
+        <div class="price-card">
+          <span class="price-card__label">Plaatsing · buiten</span>
+          <h3 class="price-card__title">Buitenunit plaatsen</h3>
+          <p class="price-card__amount">€ 449<small>vanaf, incl. btw</small></p>
+          <ul>
+            <li>Trillingsvrije muurbeugels of grondopstelling</li>
+            <li>Koelleiding tot 5 m inbegrepen (+ € 35/m)</li>
+            <li>Vacumeren &amp; lekdicht testen</li>
+            <li>F-gassenregistratie</li>
+          </ul>
+        </div>
+        <div class="price-card">
+          <span class="price-card__label">Onderhoud</span>
+          <h3 class="price-card__title">Jaarlijks onderhoud</h3>
+          <p class="price-card__amount">€ 99<small>vanaf, per jaar</small></p>
+          <ul>
+            <li>Filterreiniging &amp; controle</li>
+            <li>Koudemiddel-check</li>
+            <li>Prestatiemeting</li>
+            <li>Voorrang bij storingen</li>
+          </ul>
+        </div>
+      </div>
+      <p class="price-note">* Richtprijzen voor een standaardsituatie. Extra leidinglengte, doorvoerwerk op maat of moeilijk bereikbare locaties worden apart en vooraf begroot.</p>
+    </div>
+  </section>
+
+  <section class="steps" id="werkwijze">
+    <div class="container">
+      <div class="section__head">
+        <p class="eyebrow">Werkwijze</p>
+        <h2>Van eerste contact tot koeling in huis.</h2>
+      </div>
+      <div class="step-grid">
+        <div class="step">
+          <span class="step__num">01</span>
+          <h3>Intake plannen</h3>
+          <p>Via het formulier hieronder of telefonisch — meestal binnen 2 werkdagen bij u langs of digitaal opgenomen.</p>
+        </div>
+        <div class="step">
+          <span class="step__num">02</span>
+          <h3>Voorstel op maat</h3>
+          <p>U ontvangt een vast tarief voor het gekozen model, inclusief planning.</p>
+        </div>
+        <div class="step">
+          <span class="step__num">03</span>
+          <h3>Plaatsing</h3>
+          <p>Gecertificeerde monteurs plaatsen binnen- en buitenunit, meestal binnen één dag.</p>
+        </div>
+        <div class="step">
+          <span class="step__num">04</span>
+          <h3>Onderhoud</h3>
+          <p>Jaarlijkse check zodat uw systeem optimaal blijft presteren en de garantie geldig blijft.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="intake" id="intake">
+    <div class="container intake__wrap">
+      <div class="intake__side">
+        <p class="eyebrow">Intake</p>
+        <h2>Plan uw gratis intake.</h2>
+        <p>Vul het formulier in — we nemen binnen 1 werkdag contact op om een moment af te spreken. Geen verplichtingen.</p>
+        <div class="intake__contact">
+          <span>E-mail: <a href="mailto:tichtti@gmail.com">tichtti@gmail.com</a></span>
+          <span>Werkgebied: heel Nederland &amp; België</span>
+        </div>
+      </div>
+      <div class="form-card" id="formCard">
+        <form id="intakeForm" novalidate>
+          <div class="field-row">
+            <div class="field">
+              <label for="naam">Naam*</label>
+              <input id="naam" name="naam" type="text" required autocomplete="name">
+            </div>
+            <div class="field">
+              <label for="telefoon">Telefoon*</label>
+              <input id="telefoon" name="telefoon" type="tel" required autocomplete="tel">
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="email">E-mail*</label>
+              <input id="email" name="email" type="email" required autocomplete="email">
+            </div>
+            <div class="field">
+              <label for="postcode">Postcode &amp; plaats*</label>
+              <input id="postcode" name="postcode" type="text" required autocomplete="postal-code">
+            </div>
+          </div>
+          <div class="field">
+            <label for="model">Interesse in model</label>
+            <select id="model" name="model">
+              <option value="Nog niet zeker">Nog niet zeker — advies gewenst</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Gewenste dienst(en)</label>
+            <div class="checks">
+              <label><input type="checkbox" name="diensten" value="Plaatsing binnenunit"> Plaatsing binnenunit</label>
+              <label><input type="checkbox" name="diensten" value="Plaatsing buitenunit"> Plaatsing buitenunit</label>
+              <label><input type="checkbox" name="diensten" value="Onderhoud"> Onderhoud</label>
+              <label><input type="checkbox" name="diensten" value="Nog te bepalen"> Nog te bepalen</label>
+            </div>
+          </div>
+          <div class="field">
+            <label for="moment">Voorkeursmoment</label>
+            <select id="moment" name="moment">
+              <option>Ochtend</option>
+              <option>Middag</option>
+              <option>Avond</option>
+              <option>Weekend</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="bericht">Bericht (optioneel)</label>
+            <textarea id="bericht" name="bericht" placeholder="Bijvoorbeeld: bestaande unit vervangen, of specifieke ruimte die gekoeld moet worden."></textarea>
+          </div>
+          <button class="btn btn--primary form-submit" type="submit">Verstuur aanvraag</button>
+          <p class="form-hint">Bij versturen opent uw e-mailprogramma met een vooringevulde aanvraag aan Glacio, zodat uw gegevens nergens anders zichtbaar worden dan in uw eigen mail.</p>
+        </form>
+        <div class="confirm" id="confirmPanel">
+          <div class="confirm__badge">✓</div>
+          <h3>Aanvraag klaargezet</h3>
+          <p>Er is zonet een e-mail geopend in uw mailprogramma, gericht aan Glacio. Verstuur die e-mail om de aanvraag af te ronden — we reageren binnen 1 werkdag. Geen mailprogramma ingesteld? Mail ons rechtstreeks op <a href="mailto:tichtti@gmail.com" style="color:var(--accent);">tichtti@gmail.com</a>.</p>
+          <button class="btn btn--outline" id="resetForm" type="button" style="margin-top:1.2rem;">Nieuwe aanvraag</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer__row">
+      <a class="brand" href="#top">
+        <span class="brand__mark">G</span>
+        <span class="brand__word">GLACIO</span>
+      </a>
+      <span style="font-size:.82rem;color:var(--muted);">© 2026 Glacio Klimaattechniek</span>
+    </div>
+    <p class="footer__note">Richtprijzen op deze pagina zijn indicatief en gelden voor een standaardsituatie; het definitieve voorstel ontvangt u na de gratis intake.</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var MODELS = [
+    { tier:"Compact",   naam:"Nova 25",   type:"Wandmodel",        kw:"2.5 kW",  m2:"tot 25 m²",  label:"A+++/A++", db:"19 dB(A)", prijs:"1.349", w:130,h:50,d:36 },
+    { tier:"Compact",   naam:"Nova 35",   type:"Wandmodel",        kw:"3.5 kW",  m2:"tot 35 m²",  label:"A+++/A++", db:"20 dB(A)", prijs:"1.549", w:136,h:52,d:38 },
+    { tier:"Comfort",   naam:"Nova 50",   type:"Wandmodel",        kw:"5.0 kW",  m2:"tot 50 m²",  label:"A+++/A+",  db:"22 dB(A)", prijs:"1.849", w:142,h:54,d:40 },
+    { tier:"Comfort",   naam:"Nova 60",   type:"Wandmodel XL",     kw:"6.0 kW",  m2:"tot 60 m²",  label:"A++/A+",   db:"24 dB(A)", prijs:"2.099", w:148,h:56,d:42 },
+    { tier:"Comfort",   naam:"Nova 70",   type:"Wandmodel XL",     kw:"7.0 kW",  m2:"tot 70 m²",  label:"A++/A+",   db:"26 dB(A)", prijs:"2.349", w:150,h:58,d:44 },
+    { tier:"Pro",       naam:"Pro 80",    type:"Vloer-plafondmodel", kw:"8.0 kW", m2:"tot 90 m²", label:"A++/A",    db:"29 dB(A)", prijs:"2.799", w:156,h:60,d:46 },
+    { tier:"Pro",       naam:"Pro 100",   type:"Kanaalmodel",      kw:"10.0 kW", m2:"tot 120 m²", label:"A+/A",     db:"32 dB(A)", prijs:"3.399", w:160,h:62,d:48 },
+    { tier:"Multi-split", naam:"Duo 50/50", type:"2× binnenunit",  kw:"2×5.0 kW", m2:"2× 50 m²",  label:"A++/A+",   db:"22 dB(A)", prijs:"3.199", w:150,h:58,d:44 }
+  ];
+
+  var grid = document.getElementById('modelGrid');
+  var modelSelect = document.getElementById('model');
+
+  MODELS.forEach(function(m, i){
+    var card = document.createElement('article');
+    card.className = 'model-card';
+    card.innerHTML =
+      '<div class="model-card__stage">' +
+        '<div class="box3d idle" style="--w:' + m.w + 'px;--h:' + m.h + 'px;--d:' + m.d + 'px;--r:12px;animation-delay:' + (i * 0.35) + 's;">' +
+          '<div class="box3d__face box3d__top"></div>' +
+          '<div class="box3d__face box3d__side"></div>' +
+          '<div class="box3d__face box3d__front">' +
+            '<span class="led"></span>' +
+            '<div class="vent"><div class="vent__flap" style="animation-delay:' + (i * 0.4) + 's;"></div></div>' +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+      '<p class="model-card__tier">' + m.tier + ' · ' + m.type + '</p>' +
+      '<h3 class="model-card__name">' + m.naam + '</h3>' +
+      '<ul class="model-card__specs">' +
+        '<li><span>Koelvermogen</span><span>' + m.kw + '</span></li>' +
+        '<li><span>Geschikt voor</span><span>' + m.m2 + '</span></li>' +
+        '<li><span>Energielabel</span><span>' + m.label + '</span></li>' +
+        '<li><span>Geluid binnenunit</span><span>' + m.db + '</span></li>' +
+      '</ul>' +
+      '<p class="model-card__price">€ ' + m.prijs + '<small>richtprijs, incl. plaatsing binnen + buiten</small></p>' +
+      '<button class="btn btn--outline model-card__cta" type="button" data-model="' + m.naam + '">Kies dit model</button>';
+    grid.appendChild(card);
+
+    var opt = document.createElement('option');
+    opt.value = m.naam;
+    opt.textContent = m.naam + ' — ' + m.kw + ', ' + m.m2;
+    modelSelect.appendChild(opt);
+  });
+
+  grid.addEventListener('click', function(e){
+    var btn = e.target.closest('[data-model]');
+    if(!btn) return;
+    modelSelect.value = btn.getAttribute('data-model');
+    modelSelect.style.outline = '2px solid var(--accent-bright)';
+    setTimeout(function(){ modelSelect.style.outline = ''; }, 1200);
+    document.getElementById('intake').scrollIntoView({ behavior:'smooth', block:'start' });
+  });
+
+  /* theme toggle */
+  var root = document.documentElement;
+  var toggle = document.getElementById('themeToggle');
+  try{
+    var saved = localStorage.getItem('glacio-theme');
+    if(saved){ root.setAttribute('data-theme', saved); }
+  }catch(e){}
+  toggle.addEventListener('click', function(){
+    var current = root.getAttribute('data-theme');
+    var next = current === 'dark' ? 'light' : (current === 'light' ? 'dark' : (matchMedia('(prefers-color-scheme: dark)').matches ? 'light' : 'dark'));
+    root.setAttribute('data-theme', next);
+    try{ localStorage.setItem('glacio-theme', next); }catch(e){}
+  });
+
+  /* scroll-spy nav */
+  var sections = ['modellen','tarieven','werkwijze','intake'].map(function(id){ return document.getElementById(id); });
+  var links = Array.prototype.slice.call(document.querySelectorAll('#navLinks a'));
+  if('IntersectionObserver' in window){
+    var obs = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){
+          links.forEach(function(l){ l.classList.toggle('is-active', l.getAttribute('href') === '#' + entry.target.id); });
+        }
+      });
+    }, { rootMargin:'-40% 0px -50% 0px' });
+    sections.forEach(function(s){ if(s) obs.observe(s); });
+  }
+
+  /* hero pointer tilt */
+  var reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var heroScene = document.querySelector('.hero__scene');
+  var rig = document.getElementById('heroRig');
+  if(heroScene && rig && !reduceMotion){
+    heroScene.addEventListener('pointermove', function(e){
+      var rect = heroScene.getBoundingClientRect();
+      var px = (e.clientX - rect.left) / rect.width - 0.5;
+      var py = (e.clientY - rect.top) / rect.height - 0.5;
+      rig.style.transform = 'rotateY(' + (px * 16) + 'deg) rotateX(' + (py * -12) + 'deg)';
+    });
+    heroScene.addEventListener('pointerleave', function(){
+      rig.style.transform = 'rotateY(0deg) rotateX(0deg)';
+    });
+  }
+
+  /* card pointer tilt */
+  if(!reduceMotion){
+    grid.addEventListener('pointermove', function(e){
+      var card = e.target.closest('.model-card');
+      if(!card) return;
+      var stage = card.querySelector('.box3d');
+      var rect = card.getBoundingClientRect();
+      var px = (e.clientX - rect.left) / rect.width - 0.5;
+      var py = (e.clientY - rect.top) / rect.height - 0.5;
+      stage.style.transform = 'rotateY(' + (26 + px * 20) + 'deg) rotateX(' + (-16 + py * -14) + 'deg)';
+    });
+    grid.addEventListener('pointerleave', function(e){
+      var card = e.target.closest && e.target.closest('.model-card');
+      if(!card) return;
+      var stage = card.querySelector('.box3d');
+      stage.style.transform = '';
+    }, true);
+  }
+
+  /* intake form -> mailto */
+  var form = document.getElementById('intakeForm');
+  var formCard = document.getElementById('formCard');
+  var confirmPanel = document.getElementById('confirmPanel');
+  var resetBtn = document.getElementById('resetForm');
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    if(!form.reportValidity()) return;
+
+    var data = new FormData(form);
+    var diensten = data.getAll('diensten');
+    var lines = [
+      'Nieuwe intake-aanvraag via de Glacio-website',
+      '',
+      'Naam: ' + data.get('naam'),
+      'Telefoon: ' + data.get('telefoon'),
+      'E-mail: ' + data.get('email'),
+      'Postcode & plaats: ' + data.get('postcode'),
+      'Interesse in model: ' + data.get('model'),
+      'Gewenste dienst(en): ' + (diensten.length ? diensten.join(', ') : 'Nog te bepalen'),
+      'Voorkeursmoment: ' + data.get('moment'),
+      'Bericht: ' + (data.get('bericht') || '—')
+    ];
+    var subject = 'Intake aanvraag – ' + data.get('naam');
+    var mailto = 'mailto:tichtti@gmail.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(lines.join('\n'));
+    window.location.href = mailto;
+
+    formCard.classList.add('is-submitted');
+    confirmPanel.classList.add('is-visible');
+  });
+
+  resetBtn.addEventListener('click', function(){
+    form.reset();
+    formCard.classList.remove('is-submitted');
+    confirmPanel.classList.remove('is-visible');
+  });
+})();
+</script>
+</body>
+</html>

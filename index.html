@@ -328,6 +328,17 @@
   .price-card li::before{ content:''; position:absolute; left:0; top:.5em; width:6px; height:6px; border-radius:50%; background:var(--ice); }
   .price-note{ margin-top:2rem; font-size:.82rem; color:var(--hero-muted); font-family:var(--font-mono); }
 
+  /* ---------- accessories ---------- */
+  .accessories{ background:var(--bg); }
+  .accessory-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:1.1rem; }
+  .accessory-card{
+    background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:1.3rem 1.4rem;
+  }
+  .accessory-card h3{ font-family:var(--font-display); font-size:1rem; font-weight:700; margin-bottom:.7rem; }
+  .accessory-card ul{ list-style:none; margin:0; padding:0; display:grid; gap:.5rem; }
+  .accessory-card li{ font-size:.85rem; color:var(--muted); padding-left:1.1rem; position:relative; }
+  .accessory-card li::before{ content:''; position:absolute; left:0; top:.55em; width:5px; height:5px; border-radius:50%; background:var(--accent); }
+
   /* ---------- werkwijze ---------- */
   .steps{ background:var(--surface); }
   .step-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:1.3rem; }
@@ -397,6 +408,7 @@
       <li><a href="#quickscan">Quickscan</a></li>
       <li><a href="#modellen">Modellen</a></li>
       <li><a href="#tarieven">Diensten &amp; tarieven</a></li>
+      <li><a href="#toebehoren">Toebehoren</a></li>
       <li><a href="#werkwijze">Werkwijze</a></li>
       <li><a href="#intake">Plan intake</a></li>
     </ul>
@@ -563,6 +575,42 @@
     </div>
   </section>
 
+  <section class="accessories" id="toebehoren">
+    <div class="container">
+      <div class="section__head">
+        <p class="eyebrow">Opties &amp; toebehoren</p>
+        <h2>Maak uw installatie compleet.</h2>
+        <p>Naast het model zelf leveren we ook al het toebehoren voor een nette, complete plaatsing. Geef bij de intake aan wat van toepassing is — de prijs bevestigen we altijd vooraf, samen met het totaalvoorstel.</p>
+      </div>
+      <div class="accessory-grid">
+        <div class="accessory-card">
+          <h3>Elektra &amp; leidingen</h3>
+          <ul><li>Compleet aansluitpakket (koelleiding, stuurstroom &amp; condensafvoer)</li><li>Losse koelleiding- of stuurstroomkabelsets, div. lengtes</li></ul>
+        </div>
+        <div class="accessory-card">
+          <h3>Wandafwerking</h3>
+          <ul><li>Leidinggoot met bochten, T-stukken &amp; eindstukken</li><li>Diverse kleuren (wit, grijs, zwart)</li></ul>
+        </div>
+        <div class="accessory-card">
+          <h3>Montage buitenunit</h3>
+          <ul><li>Muurbeugel (S/L/XL, ook voor Duo-systemen)</li><li>Opstelblokken voor plat dak of grond</li><li>Trillingsdempers</li></ul>
+        </div>
+        <div class="accessory-card">
+          <h3>Condensafvoer</h3>
+          <ul><li>Flexibele afvoerslang</li><li>Condenspomp (bij plaatsing zonder vrij verval)</li></ul>
+        </div>
+        <div class="accessory-card">
+          <h3>Esthetiek</h3>
+          <ul><li>Omkasting/cover voor de buitenunit (houtlook of aluminium)</li></ul>
+        </div>
+        <div class="accessory-card">
+          <h3>Bediening &amp; overig</h3>
+          <ul><li>WiFi-module voor app-bediening</li><li>Reserve afstandsbediening</li><li>Werkschakelaar (zakelijke installatie)</li><li>Dakdoorvoer</li></ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="steps" id="werkwijze">
     <div class="container">
       <div class="section__head">
@@ -641,6 +689,22 @@
               <label><input type="checkbox" name="diensten" value="Onderhoud"> Onderhoud</label>
               <label><input type="checkbox" name="diensten" value="Standaard kabelpakket 3m (€ 50)"> Standaard kabelpakket 3m (€ 50)</label>
               <label><input type="checkbox" name="diensten" value="Nog te bepalen"> Nog te bepalen</label>
+            </div>
+          </div>
+          <div class="field">
+            <label>Toebehoren (optioneel, prijs op aanvraag)</label>
+            <div class="checks">
+              <label><input type="checkbox" name="toebehoren" value="Compleet aansluitpakket (koelleiding, stuurstroom & condensafvoer)"> Compleet aansluitpakket</label>
+              <label><input type="checkbox" name="toebehoren" value="Leidinggoot / wandafwerking"> Leidinggoot / wandafwerking</label>
+              <label><input type="checkbox" name="toebehoren" value="Muurbeugel buitenunit"> Muurbeugel buitenunit</label>
+              <label><input type="checkbox" name="toebehoren" value="Opstelblokken (plat dak / grond)"> Opstelblokken (plat dak / grond)</label>
+              <label><input type="checkbox" name="toebehoren" value="Trillingsdempers"> Trillingsdempers</label>
+              <label><input type="checkbox" name="toebehoren" value="Condenspomp"> Condenspomp</label>
+              <label><input type="checkbox" name="toebehoren" value="Omkasting/cover buitenunit"> Omkasting/cover buitenunit</label>
+              <label><input type="checkbox" name="toebehoren" value="WiFi-module"> WiFi-module</label>
+              <label><input type="checkbox" name="toebehoren" value="Reserve afstandsbediening"> Reserve afstandsbediening</label>
+              <label><input type="checkbox" name="toebehoren" value="Werkschakelaar (zakelijk)"> Werkschakelaar (zakelijk)</label>
+              <label><input type="checkbox" name="toebehoren" value="Dakdoorvoer"> Dakdoorvoer</label>
             </div>
           </div>
           <div class="field">
@@ -864,7 +928,7 @@
   });
 
   /* scroll-spy nav */
-  var sections = ['quickscan','modellen','tarieven','werkwijze','intake'].map(function(id){ return document.getElementById(id); });
+  var sections = ['quickscan','modellen','tarieven','toebehoren','werkwijze','intake'].map(function(id){ return document.getElementById(id); });
   var links = Array.prototype.slice.call(document.querySelectorAll('#navLinks a'));
   if('IntersectionObserver' in window){
     var obs = new IntersectionObserver(function(entries){
@@ -924,6 +988,7 @@
 
     var data = new FormData(form);
     var diensten = data.getAll('diensten');
+    var toebehoren = data.getAll('toebehoren');
     var lines = [
       'Nieuwe intake-aanvraag via de Glacio-website',
       '',
@@ -933,6 +998,7 @@
       'Postcode & plaats: ' + data.get('postcode'),
       'Interesse in model: ' + data.get('model'),
       'Gewenste dienst(en): ' + (diensten.length ? diensten.join(', ') : 'Nog te bepalen'),
+      'Gewenste toebehoren: ' + (toebehoren.length ? toebehoren.join(', ') + ' (prijs op aanvraag)' : 'Geen'),
       'Voorkeursmoment: ' + data.get('moment'),
       'Bericht: ' + (data.get('bericht') || '—')
     ];

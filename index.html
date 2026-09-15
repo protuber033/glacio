@@ -686,12 +686,10 @@
 <script>
 (function(){
   var MODELS = [
-    { tier:"Compact",   naam:"MSZ-AY20VGK",  merk:"Mitsubishi Electric", type:"Wandmodel", kw:"2.0 kW",  m2:"tot 25 m²",  m2max:25,  label:"A+++/A+++", db:"19 dB(A)", prijs:"1.395", w:130,h:50,d:36 },
-    { tier:"Compact",   naam:"MSZ-AY25VGK",  merk:"Mitsubishi Electric", type:"Wandmodel", kw:"2.5 kW",  m2:"tot 30 m²",  m2max:30,  label:"A+++/A++",  db:"19 dB(A)", prijs:"1.495", w:132,h:51,d:37 },
-    { tier:"Comfort",   naam:"MSZ-AY35VGK",  merk:"Mitsubishi Electric", type:"Wandmodel", kw:"3.5 kW",  m2:"tot 40 m²",  m2max:40,  label:"A+++/A++",  db:"20 dB(A)", prijs:"1.795", w:136,h:52,d:38 },
-    { tier:"Comfort",   naam:"MSZ-AY42VGK",  merk:"Mitsubishi Electric", type:"Wandmodel", kw:"4.2 kW",  m2:"tot 50 m²",  m2max:50,  label:"A++/A+",    db:"21 dB(A)", prijs:"2.095", w:142,h:54,d:40 },
-    { tier:"Comfort",   naam:"MSZ-AY50VGK",  merk:"Mitsubishi Electric", type:"Wandmodel", kw:"5.0 kW",  m2:"tot 60 m²",  m2max:60,  label:"A++/A+",    db:"22 dB(A)", prijs:"2.395", w:148,h:56,d:42 },
-    { tier:"Multi-split", naam:"MXZ Duo AY20 + AY25", merk:"Mitsubishi Electric", type:"2× binnenunit, 1 buitenunit", kw:"2.0 + 2.5 kW", m2:"2 ruimtes, elk tot 25–30 m²", m2max:30, multi:true, label:"A++/A+", db:"19 dB(A)", prijs:"2.995", w:150,h:58,d:44 }
+    { tier:"Compact",     naam:"MSZ-AY25VGK",       merk:"Mitsubishi Electric", type:"Wandmodel",                    kw:"2.5 kW",       m2:"tot 30 m²",                  m2max:30, label:"A+++/A++", db:"19 dB(A)", prijs:"1.710", w:132,h:51,d:37 },
+    { tier:"Comfort",     naam:"MSZ-AY35VGK",       merk:"Mitsubishi Electric", type:"Wandmodel",                    kw:"3.5 kW",       m2:"tot 40 m²",                  m2max:40, label:"A+++/A++", db:"20 dB(A)", prijs:"1.780", w:136,h:52,d:38 },
+    { tier:"Comfort",     naam:"MSZ-AY50VGK",       merk:"Mitsubishi Electric", type:"Wandmodel",                    kw:"5.0 kW",       m2:"tot 60 m²",                  m2max:60, label:"A++/A+",  db:"22 dB(A)", prijs:"2.280", w:148,h:56,d:42 },
+    { tier:"Multi-split", naam:"MXZ Duo 2× AY25VGK", merk:"Mitsubishi Electric", type:"2× binnenunit, 1 buitenunit",  kw:"2× 2.5 kW",    m2:"2 ruimtes, elk tot 30 m²",   m2max:30, multi:true, label:"A+++/A+", db:"19 dB(A)", prijs:"3.280", w:150,h:58,d:44 }
   ];
 
   var grid = document.getElementById('modelGrid');

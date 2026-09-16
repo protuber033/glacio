@@ -88,7 +88,9 @@
     padding:.85rem 1.4rem; border-radius:999px; border:1px solid transparent;
     cursor:pointer; text-decoration:none; transition:transform .15s ease, box-shadow .15s ease, background .15s ease;
   }
-  .btn:active{ transform:translateY(1px); }
+  .btn:hover{ transform:translateY(-1px); box-shadow:var(--shadow-1); }
+  .btn:active{ transform:translateY(1px); box-shadow:none; }
+  .btn:focus-visible{ outline:2px solid var(--accent-bright); outline-offset:3px; }
   .btn:focus-visible{ outline:2px solid var(--accent-bright); outline-offset:3px; }
   .btn--primary{ background:var(--accent); color:#fff; box-shadow:var(--shadow-1); }
   .btn--primary:hover{ background:var(--accent-bright); box-shadow:var(--shadow-2); }
@@ -126,7 +128,30 @@
     font-size:1rem;
   }
   .theme-toggle:focus-visible{ outline:2px solid var(--accent-bright); outline-offset:2px; }
-  @media (max-width:820px){ .nav__links{ display:none; } }
+  .nav-toggle{
+    display:none; width:38px; height:38px; border-radius:999px; border:1px solid var(--border);
+    background:var(--surface); color:var(--ink); cursor:pointer; align-items:center; justify-content:center;
+    flex-direction:column; gap:4px;
+  }
+  .nav-toggle span{ display:block; width:16px; height:2px; background:currentColor; border-radius:2px; transition:transform .2s ease, opacity .2s ease; }
+  .nav-toggle[aria-expanded="true"] span:nth-child(1){ transform:translateY(6px) rotate(45deg); }
+  .nav-toggle[aria-expanded="true"] span:nth-child(2){ opacity:0; }
+  .nav-toggle[aria-expanded="true"] span:nth-child(3){ transform:translateY(-6px) rotate(-45deg); }
+  .nav-toggle:focus-visible{ outline:2px solid var(--accent-bright); outline-offset:2px; }
+  @media (max-width:820px){
+    .nav-toggle{ display:flex; }
+    .header__actions .btn{ display:none; }
+    .nav__links{
+      position:absolute; left:0; right:0; top:100%; flex-direction:column; align-items:stretch; gap:0;
+      background:var(--bg); border-bottom:1px solid var(--border); box-shadow:var(--shadow-2);
+      padding:.4rem 0 .6rem; display:none;
+    }
+    .nav__links.is-open{ display:flex; }
+    .nav__links li{ padding:0 clamp(1.25rem,4vw,2.5rem); }
+    .nav__links a{ display:block; padding:.85rem 0; border-bottom:1px solid var(--border); font-size:1rem; }
+    .nav__links li:last-child a{ border-bottom:0; }
+    .nav__links a.is-active{ border-color:var(--border); color:var(--accent); }
+  }
 
   /* ---------- hero ---------- */
   .hero{ background:var(--hero-bg); color:var(--hero-ink); overflow:clip; position:relative; }
@@ -254,35 +279,68 @@
   /* ---------- section shell ---------- */
   section{ padding-block:clamp(3.5rem,7vw,5.5rem); }
   .section__head{ max-width:56ch; margin-bottom:2.6rem; }
+  .section__head .eyebrow::before{ content:''; display:inline-block; width:1.4rem; height:2px; background:currentColor; vertical-align:middle; margin-right:.6rem; opacity:.7; }
   .section__head h2{ font-size:clamp(1.7rem,3vw,2.3rem); margin-top:.6rem; }
   .section__head p{ margin-top:.8rem; color:var(--muted); font-size:1.02rem; }
 
   /* ---------- quickscan ---------- */
   .quickscan__card{
-    background:var(--surface); border:1px solid var(--border); border-radius:18px;
-    padding:1.8rem; box-shadow:var(--shadow-1); max-width:620px; margin:0 auto;
+    background:var(--surface); border:1px solid var(--border); border-radius:20px;
+    padding:clamp(1.4rem,3vw,2.2rem); box-shadow:var(--shadow-1); max-width:640px; margin:0 auto;
+    transition:max-width .3s ease;
   }
+  .quickscan__card.has-result{ max-width:1040px; }
   .quickscan__progress{
+    display:flex; align-items:center; justify-content:space-between; gap:1rem;
     font-family:var(--font-mono); font-size:.72rem; letter-spacing:.08em; text-transform:uppercase;
-    color:var(--accent); font-weight:600; margin-bottom:1rem;
+    color:var(--accent); font-weight:600; margin-bottom:1.1rem;
   }
-  .qs-question__title{ font-family:var(--font-display); font-size:1.2rem; font-weight:700; margin-bottom:1rem; }
+  .qs-bar{ flex:1; height:4px; border-radius:99px; background:var(--border); overflow:hidden; }
+  .qs-bar > span{ display:block; height:100%; background:linear-gradient(90deg, var(--accent), var(--accent-bright)); transition:width .3s ease; }
+  .qs-question__title{ font-family:var(--font-display); font-size:clamp(1.15rem,2vw,1.35rem); font-weight:700; margin-bottom:1rem; }
   .qs-options{ display:grid; gap:.6rem; }
   .qs-option{
-    text-align:left; padding:.8rem 1rem; border:1px solid var(--border); border-radius:12px;
-    background:var(--bg); cursor:pointer; font-family:var(--font-body); font-size:.92rem; color:var(--ink);
+    display:flex; align-items:center; gap:.8rem; text-align:left; padding:.85rem 1rem; border:1px solid var(--border); border-radius:12px;
+    background:var(--bg); cursor:pointer; font-family:var(--font-body); font-size:.94rem; color:var(--ink);
+    transition:border-color .15s ease, box-shadow .15s ease, transform .15s ease;
+  }
+  .qs-option::before{
+    content:''; width:18px; height:18px; flex:none; border-radius:50%; border:2px solid var(--border);
     transition:border-color .15s ease, box-shadow .15s ease;
   }
-  .qs-option:hover{ border-color:var(--accent); box-shadow:var(--shadow-1); }
+  .qs-option:hover{ border-color:var(--accent); box-shadow:var(--shadow-1); transform:translateY(-1px); }
+  .qs-option:hover::before{ border-color:var(--accent); box-shadow:inset 0 0 0 4px var(--bg), inset 0 0 0 9px var(--accent); }
+  .qs-option:focus-visible{ outline:2px solid var(--accent-bright); outline-offset:2px; }
   .qs-nav{ margin-top:1.1rem; }
-  .quickscan__result{ margin-top:1.2rem; }
-  .qs-result__card{
-    border:1px solid var(--accent); border-radius:14px; padding:1.2rem 1.3rem; background:var(--bg);
+  .quickscan__result{ margin-top:.4rem; }
+  .qs-result__intro{ font-size:.95rem; color:var(--muted); margin-bottom:1.2rem; }
+  .qs-result__grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; align-items:stretch; }
+  @media (max-width:820px){ .qs-result__grid{ grid-template-columns:1fr; } }
+  .qs-pick{
+    position:relative; display:flex; flex-direction:column; border:1px solid var(--border); border-radius:16px;
+    padding:1.3rem 1.2rem 1.2rem; background:var(--bg); transition:box-shadow .2s ease, border-color .2s ease;
   }
-  .qs-result__label{ font-family:var(--font-mono); font-size:.7rem; text-transform:uppercase; letter-spacing:.08em; color:var(--accent); font-weight:600; }
-  .qs-result__name{ font-family:var(--font-display); font-size:1.25rem; font-weight:700; margin:.3rem 0 .6rem; }
-  .qs-result__specs{ font-family:var(--font-mono); font-size:.82rem; color:var(--muted); margin-bottom:1rem; }
-  .qs-result__ctas{ display:flex; gap:.7rem; flex-wrap:wrap; }
+  .qs-pick:hover{ box-shadow:var(--shadow-2); border-color:var(--accent); }
+  .qs-pick--best{ border:2px solid var(--accent); box-shadow:var(--shadow-2); }
+  @media (min-width:821px){ .qs-pick--best{ transform:scale(1.03); z-index:1; } }
+  .qs-pick__label{
+    display:inline-flex; align-self:flex-start; font-family:var(--font-mono); font-size:.66rem; text-transform:uppercase; letter-spacing:.1em;
+    font-weight:700; padding:.3rem .6rem; border-radius:999px; background:var(--surface); color:var(--muted); border:1px solid var(--border);
+  }
+  .qs-pick--best .qs-pick__label{ background:var(--accent); color:#fff; border-color:var(--accent); }
+  .qs-pick__name{ font-family:var(--font-display); font-size:1.15rem; font-weight:700; margin:.8rem 0 .15rem; }
+  .qs-pick__type{ font-family:var(--font-mono); font-size:.7rem; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); }
+  .qs-pick__specs{ list-style:none; margin:.9rem 0 1rem; padding:0; display:grid; gap:.35rem; }
+  .qs-pick__specs li{ display:flex; justify-content:space-between; font-size:.8rem; color:var(--muted); font-family:var(--font-mono); border-bottom:1px dashed var(--border); padding-bottom:.3rem; }
+  .qs-pick__specs li span:last-child{ color:var(--ink); font-variant-numeric:tabular-nums; }
+  .qs-pick__why{ font-size:.86rem; color:var(--muted); margin-bottom:1rem; line-height:1.45; }
+  .qs-pick__price{ margin-top:auto; font-family:var(--font-mono); font-size:1.15rem; font-weight:700; font-variant-numeric:tabular-nums; }
+  .qs-pick__price small{ display:block; font-family:var(--font-body); font-weight:400; color:var(--muted); font-size:.72rem; margin-top:.1rem; }
+  .qs-pick__delta{ font-size:.78rem; font-weight:600; margin-left:.4rem; }
+  .qs-pick__delta.is-minus{ color:#1f8a4c; }
+  .qs-pick__delta.is-plus{ color:var(--muted); }
+  .qs-pick .btn{ width:100%; justify-content:center; margin-top:.9rem; font-size:.85rem; padding:.65rem 1rem; }
+  .qs-result__ctas{ display:flex; gap:.7rem; flex-wrap:wrap; justify-content:center; margin-top:1.3rem; }
 
   /* ---------- models ---------- */
   .models{ background:var(--surface); }
@@ -317,8 +375,9 @@
   .price-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:1.3rem; }
   .price-card{
     background:var(--hero-surface); border:1px solid var(--hero-border); border-radius:18px; padding:1.8rem;
-    display:flex; flex-direction:column; gap:1rem;
+    display:flex; flex-direction:column; gap:1rem; transition:transform .2s ease, border-color .2s ease;
   }
+  .price-card:hover{ transform:translateY(-3px); border-color:var(--ice); }
   .price-card__label{ font-family:var(--font-mono); font-size:.7rem; letter-spacing:.1em; text-transform:uppercase; color:var(--ice); }
   .price-card__title{ font-family:var(--font-display); font-size:1.3rem; font-weight:700; }
   .price-card__amount{ font-family:var(--font-mono); font-size:1.9rem; font-weight:600; font-variant-numeric:tabular-nums; }
@@ -333,7 +392,9 @@
   .accessory-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:1.1rem; }
   .accessory-card{
     background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:1.3rem 1.4rem;
+    transition:transform .2s ease, border-color .2s ease, box-shadow .2s ease;
   }
+  .accessory-card:hover{ transform:translateY(-3px); border-color:var(--accent); box-shadow:var(--shadow-1); }
   .accessory-card h3{ font-family:var(--font-display); font-size:1rem; font-weight:700; margin-bottom:.5rem; }
   .accessory-card p{ margin:0; font-size:.85rem; color:var(--muted); }
 
@@ -342,8 +403,16 @@
   .step-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:1.3rem; }
   @media (max-width:900px){ .step-grid{ grid-template-columns:repeat(2,1fr); } }
   @media (max-width:560px){ .step-grid{ grid-template-columns:1fr; } }
-  .step{ position:relative; padding-top:2.4rem; }
-  .step__num{ font-family:var(--font-mono); font-size:.85rem; color:var(--accent); font-weight:600; }
+  .step{ position:relative; padding-top:2.6rem; }
+  @media (min-width:901px){
+    .step::before{ content:''; position:absolute; left:0; top:1.1rem; right:-1.3rem; height:1px; background:var(--border); }
+    .step:last-child::before{ right:0; }
+  }
+  .step__num{
+    position:absolute; top:0; left:0; width:2.2rem; height:2.2rem; border-radius:50%;
+    background:var(--bg); border:1px solid var(--accent); display:flex; align-items:center; justify-content:center;
+    font-family:var(--font-mono); font-size:.8rem; color:var(--accent); font-weight:700;
+  }
   .step h3{ font-size:1.05rem; margin-top:.5rem; }
   .step p{ margin-top:.5rem; font-size:.88rem; color:var(--muted); }
 
@@ -414,6 +483,7 @@
     <div class="header__actions">
       <button class="theme-toggle" id="themeToggle" type="button" aria-label="Wissel tussen licht en donker thema">◐</button>
       <a class="btn btn--primary" href="#intake" style="padding:.6rem 1.1rem;font-size:.85rem;">Plan intake</a>
+      <button class="nav-toggle" id="navToggle" type="button" aria-label="Menu openen" aria-expanded="false" aria-controls="navLinks"><span></span><span></span><span></span></button>
     </div>
   </div>
 </header>
@@ -818,7 +888,8 @@
   function qsRenderQuestion(){
     qsResult.innerHTML = '';
     var q = QUESTIONS[qsIndex];
-    qsProgress.textContent = 'Vraag ' + (qsIndex + 1) + ' van ' + QUESTIONS.length;
+    document.getElementById('quickscanCard').classList.remove('has-result');
+    qsProgress.innerHTML = '<span>Vraag ' + (qsIndex + 1) + ' van ' + QUESTIONS.length + '</span><span class="qs-bar"><span style="width:' + Math.round(qsIndex / QUESTIONS.length * 100) + '%"></span></span>';
     var html = '<p class="qs-question__title">' + q.title + '</p><div class="qs-options">';
     q.options.forEach(function(opt, i){
       html += '<button class="qs-option" type="button" data-opt="' + i + '">' + opt.label + '</button>';
@@ -846,41 +917,77 @@
     }
   }
 
-  function qsPickModel(){
+  function priceNum(m){ return Number(String(m.prijs).replace(/\./g, '')); }
+
+  function qsPickModels(){
     var neededM2 = 0, wantsMulti = false;
     qsAnswers.forEach(function(a){
       if(!a) return;
       if(a.m2 && a.m2 > neededM2) neededM2 = a.m2;
       if(a.multi) wantsMulti = true;
     });
-    var pool = MODELS.filter(function(m){ return !!m.multi === wantsMulti; });
-    if(!pool.length) pool = MODELS;
-    var sorted = pool.slice().sort(function(a,b){ return a.m2max - b.m2max; });
-    var match = sorted.find(function(m){ return m.m2max >= neededM2; });
-    return match || sorted[sorted.length - 1];
+    var byPrice = MODELS.slice().sort(function(a,b){ return priceNum(a) - priceNum(b); });
+    var pool = byPrice.filter(function(m){ return !!m.multi === wantsMulti; });
+    var ideal = pool.find(function(m){ return m.m2max >= neededM2; }) || pool[pool.length - 1] || byPrice[0];
+    var idx = byPrice.indexOf(ideal);
+    var start = Math.min(Math.max(idx - 1, 0), Math.max(byPrice.length - 3, 0));
+    var picks = byPrice.slice(start, start + 3);
+    return { ideal: ideal, picks: picks, neededM2: neededM2 };
+  }
+
+  function qsWhy(m, ideal, neededM2){
+    if(m === ideal){
+      return m.multi ? 'Eén buitenunit, twee ruimtes — precies wat u aangaf.' : 'Vermogen sluit aan op ' + (neededM2 ? '±' + neededM2 + ' m²' : 'uw ruimte') + ', zonder overcapaciteit.';
+    }
+    if(priceNum(m) < priceNum(ideal)){
+      return 'Scherper geprijsd; voldoende als de ruimte goed geïsoleerd is of iets kleiner uitvalt.';
+    }
+    return m.multi ? 'Zelfde kwaliteit, maar direct twee ruimtes koelen met één buitenunit.' : 'Meer reserve: sneller op temperatuur en stiller op deellast.';
   }
 
   function qsRenderResult(){
-    var m = qsPickModel();
-    qsProgress.textContent = 'Advies gereed';
+    var r = qsPickModels();
+    var idealPrice = priceNum(r.ideal);
+    document.getElementById('quickscanCard').classList.add('has-result');
+    qsProgress.innerHTML = '<span>Advies gereed</span><span class="qs-bar"><span style="width:100%"></span></span>';
     qsQuestion.innerHTML = '';
+
+    var cards = r.picks.map(function(m){
+      var isBest = m === r.ideal;
+      var diff = priceNum(m) - idealPrice;
+      var label = isBest ? 'Beste match' : (diff < 0 ? 'Voordeliger' : 'Meer vermogen');
+      var delta = isBest ? '' : '<span class="qs-pick__delta ' + (diff < 0 ? 'is-minus' : 'is-plus') + '">' + (diff < 0 ? '− ' : '+ ') + '€ ' + Math.abs(diff).toLocaleString('nl-NL') + '</span>';
+      return '<div class="qs-pick' + (isBest ? ' qs-pick--best' : '') + '">' +
+        '<span class="qs-pick__label">' + label + '</span>' +
+        '<p class="qs-pick__name">' + m.naam + '</p>' +
+        '<p class="qs-pick__type">' + m.type + '</p>' +
+        '<ul class="qs-pick__specs">' +
+          '<li><span>Vermogen</span><span>' + m.kw + '</span></li>' +
+          '<li><span>Geschikt voor</span><span>' + m.m2 + '</span></li>' +
+          '<li><span>Label</span><span>' + m.label + '</span></li>' +
+          '<li><span>Geluid</span><span>' + m.db + '</span></li>' +
+        '</ul>' +
+        '<p class="qs-pick__why">' + qsWhy(m, r.ideal, r.neededM2) + '</p>' +
+        '<p class="qs-pick__price">€ ' + m.prijs + delta + '<small>richtprijs, incl. plaatsing</small></p>' +
+        '<button class="btn ' + (isBest ? 'btn--primary' : 'btn--outline') + '" type="button" data-pick="' + m.naam + '">Kies dit model</button>' +
+      '</div>';
+    }).join('');
+
     qsResult.innerHTML =
-      '<div class="qs-result__card">' +
-        '<p class="qs-result__label">Aanbevolen model</p>' +
-        '<p class="qs-result__name">' + m.naam + '</p>' +
-        '<p class="qs-result__specs">' + m.kw + ' · ' + m.m2 + ' · energielabel ' + m.label + ' · ' + m.db + ' · richtprijs € ' + m.prijs + '</p>' +
-        '<div class="qs-result__ctas">' +
-          '<button class="btn btn--primary" type="button" id="qsToIntake">Kies dit model &amp; ga naar intake</button>' +
-          '<button class="btn btn--outline" type="button" id="qsToModels">Bekijk alle modellen</button>' +
-          '<button class="btn btn--ghost" type="button" id="qsRestart">Opnieuw</button>' +
-        '</div>' +
+      '<p class="qs-result__intro">Het gemarkeerde model is ons advies op basis van uw antwoorden. Daarnaast ziet u de twee dichtstbijzijnde alternatieven: voordeliger of met meer reserve.</p>' +
+      '<div class="qs-result__grid">' + cards + '</div>' +
+      '<div class="qs-result__ctas">' +
+        '<button class="btn btn--ghost" type="button" id="qsToModels">Bekijk alle modellen</button>' +
+        '<button class="btn btn--ghost" type="button" id="qsRestart">Opnieuw</button>' +
       '</div>';
 
-    document.getElementById('qsToIntake').addEventListener('click', function(){
-      modelSelect.value = m.naam;
-      modelSelect.style.outline = '2px solid var(--accent-bright)';
-      setTimeout(function(){ modelSelect.style.outline = ''; }, 1200);
-      document.getElementById('intake').scrollIntoView({ behavior:'smooth', block:'start' });
+    qsResult.querySelectorAll('[data-pick]').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        modelSelect.value = btn.getAttribute('data-pick');
+        modelSelect.style.outline = '2px solid var(--accent-bright)';
+        setTimeout(function(){ modelSelect.style.outline = ''; }, 1200);
+        document.getElementById('intake').scrollIntoView({ behavior:'smooth', block:'start' });
+      });
     });
     document.getElementById('qsToModels').addEventListener('click', function(){
       document.getElementById('modellen').scrollIntoView({ behavior:'smooth', block:'start' });
@@ -916,6 +1023,19 @@
     root.setAttribute('data-theme', next);
     try{ localStorage.setItem('glacio-theme', next); }catch(e){}
   });
+
+  /* mobile nav */
+  var navToggle = document.getElementById('navToggle');
+  var navLinks = document.getElementById('navLinks');
+  function closeNav(){ navLinks.classList.remove('is-open'); navToggle.setAttribute('aria-expanded', 'false'); navToggle.setAttribute('aria-label', 'Menu openen'); }
+  navToggle.addEventListener('click', function(){
+    var open = !navLinks.classList.contains('is-open');
+    navLinks.classList.toggle('is-open', open);
+    navToggle.setAttribute('aria-expanded', String(open));
+    navToggle.setAttribute('aria-label', open ? 'Menu sluiten' : 'Menu openen');
+  });
+  navLinks.addEventListener('click', function(e){ if(e.target.closest('a')) closeNav(); });
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeNav(); });
 
   /* scroll-spy nav */
   var sections = ['quickscan','modellen','tarieven','toebehoren','werkwijze','intake'].map(function(id){ return document.getElementById(id); });

@@ -530,10 +530,8 @@
           <h3 class="price-card__title">Binnenunit monteren</h3>
           <p class="price-card__amount">€ 349<small>vanaf, incl. btw</small></p>
           <ul>
-            <li>Montage op wandconsole</li>
+            <li>Montage, aansluiting &amp; testen</li>
             <li>Doorvoer &amp; afvoer condenswater</li>
-            <li>Elektrische aansluiting</li>
-            <li>Instellen &amp; testen</li>
           </ul>
         </div>
         <div class="price-card">
@@ -541,10 +539,8 @@
           <h3 class="price-card__title">Buitenunit plaatsen</h3>
           <p class="price-card__amount">€ 449<small>vanaf, incl. btw</small></p>
           <ul>
-            <li>Trillingsvrije muurbeugels of grondopstelling</li>
-            <li>Koelleiding tot 5 m inbegrepen (+ € 35/m)</li>
-            <li>Vacumeren &amp; lekdicht testen</li>
-            <li>F-gassenregistratie</li>
+            <li>Muurbeugels of grondopstelling</li>
+            <li>Koelleiding tot 5 m incl. (+ € 35/m)</li>
           </ul>
         </div>
         <div class="price-card">
@@ -552,10 +548,8 @@
           <h3 class="price-card__title">Jaarlijks onderhoud</h3>
           <p class="price-card__amount">€ 99<small>vanaf, per jaar</small></p>
           <ul>
-            <li>Filterreiniging &amp; controle</li>
-            <li>Koudemiddel-check</li>
-            <li>Prestatiemeting</li>
-            <li>Voorrang bij storingen</li>
+            <li>Filter- &amp; koudemiddelcheck</li>
+            <li>Prestatiemeting &amp; voorrang bij storing</li>
           </ul>
         </div>
         <div class="price-card">
@@ -563,9 +557,7 @@
           <h3 class="price-card__title">Standaard kabelpakket</h3>
           <p class="price-card__amount">€ 50<small>vast, per set</small></p>
           <ul>
-            <li>3 meter koel- &amp; stroomkabel</li>
-            <li>Nette wandgoot inbegrepen</li>
-            <li>Aan te vragen bij de intake</li>
+            <li>3 m koel- &amp; stroomkabel + wandgoot</li>
             <li>Langere lengtes op maat begroot</li>
           </ul>
         </div>
@@ -772,16 +764,15 @@
           '</div>' +
         '</div>' +
       '</div>' +
-      '<p class="model-card__tier">' + m.tier + ' · ' + m.merk + '</p>' +
+      '<p class="model-card__tier">' + m.tier + ' · ' + m.type + '</p>' +
       '<h3 class="model-card__name">' + m.naam + '</h3>' +
-      '<p class="model-card__tier" style="margin-top:-.5rem;">' + m.type + '</p>' +
       '<ul class="model-card__specs">' +
-        '<li><span>Koelvermogen</span><span>' + m.kw + '</span></li>' +
+        '<li><span>Vermogen</span><span>' + m.kw + '</span></li>' +
         '<li><span>Geschikt voor</span><span>' + m.m2 + '</span></li>' +
-        '<li><span>Energielabel</span><span>' + m.label + '</span></li>' +
-        '<li><span>Geluid binnenunit</span><span>' + m.db + '</span></li>' +
+        '<li><span>Label</span><span>' + m.label + '</span></li>' +
+        '<li><span>Geluid</span><span>' + m.db + '</span></li>' +
       '</ul>' +
-      '<p class="model-card__price">€ ' + m.prijs + '<small>richtprijs, incl. plaatsing binnen + buiten</small></p>' +
+      '<p class="model-card__price">€ ' + m.prijs + '<small>richtprijs, incl. plaatsing</small></p>' +
       '<button class="btn btn--outline model-card__cta" type="button" data-model="' + m.naam + '">Kies dit model</button>';
     grid.appendChild(card);
 

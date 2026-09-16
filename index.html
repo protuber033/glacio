@@ -342,6 +342,37 @@
   .qs-pick .btn{ width:100%; justify-content:center; margin-top:.9rem; font-size:.85rem; padding:.65rem 1rem; }
   .qs-result__ctas{ display:flex; gap:.7rem; flex-wrap:wrap; justify-content:center; margin-top:1.3rem; }
 
+  /* ---------- pakket-dialoog ---------- */
+  .pakket-dialog{
+    border:0; border-radius:20px; padding:0; max-width:min(560px, calc(100vw - 2rem)); width:100%;
+    background:var(--surface); color:var(--ink); box-shadow:0 30px 80px -20px rgba(0,0,0,.45);
+    max-height:calc(100dvh - 2rem); overflow-y:auto;
+  }
+  @media (max-width:560px){ .pakket-option__desc{ display:none; } .pakket-option{ align-items:center; } }
+  .pakket-dialog::backdrop{ background:rgba(4,20,29,.55); backdrop-filter:blur(3px); }
+  .pakket-dialog__inner{ padding:clamp(1.4rem,3vw,2rem); margin:0; }
+  .pakket-dialog__title{ font-family:var(--font-display); font-size:1.3rem; font-weight:700; margin-top:.5rem; }
+  .pakket-dialog__title span{ color:var(--accent); }
+  .pakket-dialog__lede{ color:var(--muted); font-size:.92rem; margin:.6rem 0 1.2rem; }
+  .pakket-options{ display:grid; gap:.6rem; }
+  .pakket-option{
+    display:flex; align-items:flex-start; gap:.8rem; padding:.9rem 1rem; border:1px solid var(--border); border-radius:12px;
+    background:var(--bg); cursor:pointer; transition:border-color .15s ease, box-shadow .15s ease;
+  }
+  .pakket-option:hover{ border-color:var(--accent); }
+  .pakket-option.is-checked{ border-color:var(--accent); box-shadow:0 0 0 1px var(--accent); }
+  .pakket-option input{ accent-color:var(--accent); margin-top:.25rem; flex:none; }
+  .pakket-option__body{ flex:1; display:flex; flex-direction:column; gap:.2rem; }
+  .pakket-option__title{ font-weight:600; font-size:.95rem; }
+  .pakket-option__title em{
+    font-style:normal; font-family:var(--font-mono); font-size:.62rem; letter-spacing:.1em; text-transform:uppercase;
+    background:var(--accent); color:#fff; padding:.2rem .5rem; border-radius:999px; margin-left:.5rem; vertical-align:middle;
+  }
+  .pakket-option__desc{ font-size:.82rem; color:var(--muted); line-height:1.45; }
+  .pakket-option__price{ font-family:var(--font-mono); font-weight:700; font-variant-numeric:tabular-nums; white-space:nowrap; }
+  .pakket-dialog__ctas{ display:flex; gap:.7rem; flex-wrap:wrap; margin-top:1.3rem; }
+  .pakket-dialog__ctas .btn--primary{ flex:1; justify-content:center; }
+
   /* ---------- models ---------- */
   .models{ background:var(--surface); }
   .model-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(258px,1fr)); gap:1.3rem; }
@@ -624,11 +655,11 @@
         </div>
         <div class="price-card">
           <span class="price-card__label">Optie</span>
-          <h3 class="price-card__title">Standaard kabelpakket</h3>
-          <p class="price-card__amount">€ 50<small>vast, per set</small></p>
+          <h3 class="price-card__title">Aansluitpakket</h3>
+          <p class="price-card__amount">€ 50<small>standaard 3 m, incl. btw</small></p>
           <ul>
-            <li>3 m koel- &amp; stroomkabel + wandgoot</li>
-            <li>Langere lengtes op maat begroot</li>
+            <li>Koelleiding, stuurstroom, condensafvoer &amp; wandgoot</li>
+            <li>Langer nodig? 5 m € 120 · 10 m € 295</li>
           </ul>
         </div>
       </div>
@@ -743,12 +774,20 @@
             </select>
           </div>
           <div class="field">
+            <label>Aansluitpakket</label>
+            <div class="checks" id="pakketChecks">
+              <label><input type="radio" name="pakket" value="Standaard 3 m (€ 50)" checked> Standaard 3 m (€ 50)</label>
+              <label><input type="radio" name="pakket" value="5 m (€ 120)"> 5 m (€ 120)</label>
+              <label><input type="radio" name="pakket" value="10 m (€ 295)"> 10 m (€ 295)</label>
+              <label><input type="radio" name="pakket" value="Nog niet zeker / langer dan 10 m"> Nog niet zeker / langer</label>
+            </div>
+          </div>
+          <div class="field">
             <label>Gewenste dienst(en)</label>
             <div class="checks">
               <label><input type="checkbox" name="diensten" value="Plaatsing binnenunit"> Plaatsing binnenunit</label>
               <label><input type="checkbox" name="diensten" value="Plaatsing buitenunit"> Plaatsing buitenunit</label>
               <label><input type="checkbox" name="diensten" value="Onderhoud"> Onderhoud</label>
-              <label><input type="checkbox" name="diensten" value="Standaard kabelpakket 3m (€ 50)"> Standaard kabelpakket 3m (€ 50)</label>
               <label><input type="checkbox" name="diensten" value="Nog te bepalen"> Nog te bepalen</label>
             </div>
           </div>
@@ -794,6 +833,52 @@
     </div>
   </section>
 </main>
+
+<dialog class="pakket-dialog" id="pakketDialog" aria-labelledby="pakketTitle">
+  <form method="dialog" class="pakket-dialog__inner">
+    <p class="eyebrow">Stap 2 van 2</p>
+    <h3 id="pakketTitle" class="pakket-dialog__title">Welk aansluitpakket past bij <span id="pakketModel"></span>?</h3>
+    <p class="pakket-dialog__lede">Het aansluitpakket verbindt binnen- en buitenunit: koelleiding, stuurstroomkabel, condensafvoer en wandgoot. De lengte is de afstand tussen beide units.</p>
+    <div class="pakket-options" id="pakketOptions">
+      <label class="pakket-option is-checked">
+        <input type="radio" name="pakketKeuze" value="Standaard 3 m (€ 50)" checked>
+        <span class="pakket-option__body">
+          <span class="pakket-option__title">Standaard 3 m <em>Aanbevolen</em></span>
+          <span class="pakket-option__desc">Voldoende als de buitenunit direct achter de muur van de binnenunit hangt — de meest voorkomende situatie.</span>
+        </span>
+        <span class="pakket-option__price">€ 50</span>
+      </label>
+      <label class="pakket-option">
+        <input type="radio" name="pakketKeuze" value="5 m (€ 120)">
+        <span class="pakket-option__body">
+          <span class="pakket-option__title">5 m</span>
+          <span class="pakket-option__desc">Buitenunit een verdieping lager of een paar meter opzij.</span>
+        </span>
+        <span class="pakket-option__price">€ 120</span>
+      </label>
+      <label class="pakket-option">
+        <input type="radio" name="pakketKeuze" value="10 m (€ 295)">
+        <span class="pakket-option__body">
+          <span class="pakket-option__title">10 m</span>
+          <span class="pakket-option__desc">Lange leidingweg, bv. van zolder naar begane grond of naar een vrijstaande opstelling.</span>
+        </span>
+        <span class="pakket-option__price">€ 295</span>
+      </label>
+      <label class="pakket-option">
+        <input type="radio" name="pakketKeuze" value="Nog niet zeker / langer dan 10 m">
+        <span class="pakket-option__body">
+          <span class="pakket-option__title">Weet ik niet / langer dan 10 m</span>
+          <span class="pakket-option__desc">We meten het in tijdens de intake en begroten het vooraf.</span>
+        </span>
+        <span class="pakket-option__price">op maat</span>
+      </label>
+    </div>
+    <div class="pakket-dialog__ctas">
+      <button class="btn btn--primary" type="button" id="pakketConfirm">Verder naar intake</button>
+      <button class="btn btn--outline" type="submit" value="cancel">Annuleren</button>
+    </div>
+  </form>
+</dialog>
 
 <footer>
   <div class="container">
@@ -982,12 +1067,7 @@
       '</div>';
 
     qsResult.querySelectorAll('[data-pick]').forEach(function(btn){
-      btn.addEventListener('click', function(){
-        modelSelect.value = btn.getAttribute('data-pick');
-        modelSelect.style.outline = '2px solid var(--accent-bright)';
-        setTimeout(function(){ modelSelect.style.outline = ''; }, 1200);
-        document.getElementById('intake').scrollIntoView({ behavior:'smooth', block:'start' });
-      });
+      btn.addEventListener('click', function(){ chooseModel(btn.getAttribute('data-pick')); });
     });
     document.getElementById('qsToModels').addEventListener('click', function(){
       document.getElementById('modellen').scrollIntoView({ behavior:'smooth', block:'start' });
@@ -1001,13 +1081,43 @@
 
   qsRenderQuestion();
 
-  grid.addEventListener('click', function(e){
-    var btn = e.target.closest('[data-model]');
-    if(!btn) return;
-    modelSelect.value = btn.getAttribute('data-model');
+  /* model kiezen -> pakketkeuze -> intake */
+  var pakketDialog = document.getElementById('pakketDialog');
+  var pakketModelEl = document.getElementById('pakketModel');
+  var pakketOptions = document.getElementById('pakketOptions');
+  var pendingModel = null;
+
+  function chooseModel(naam){
+    pendingModel = naam;
+    pakketModelEl.textContent = naam;
+    if(typeof pakketDialog.showModal === 'function'){ pakketDialog.showModal(); }
+    else { goToIntake(naam, 'Standaard 3 m (€ 50)'); }
+  }
+
+  function goToIntake(naam, pakket){
+    modelSelect.value = naam;
+    var radio = document.querySelector('#pakketChecks input[value="' + pakket + '"]');
+    if(radio) radio.checked = true;
     modelSelect.style.outline = '2px solid var(--accent-bright)';
     setTimeout(function(){ modelSelect.style.outline = ''; }, 1200);
     document.getElementById('intake').scrollIntoView({ behavior:'smooth', block:'start' });
+  }
+
+  pakketOptions.addEventListener('change', function(){
+    pakketOptions.querySelectorAll('.pakket-option').forEach(function(l){
+      l.classList.toggle('is-checked', l.querySelector('input').checked);
+    });
+  });
+  document.getElementById('pakketConfirm').addEventListener('click', function(){
+    var chosen = pakketOptions.querySelector('input:checked');
+    pakketDialog.close();
+    goToIntake(pendingModel, chosen ? chosen.value : 'Standaard 3 m (€ 50)');
+  });
+
+  grid.addEventListener('click', function(e){
+    var btn = e.target.closest('[data-model]');
+    if(!btn) return;
+    chooseModel(btn.getAttribute('data-model'));
   });
 
   /* theme toggle */
@@ -1110,6 +1220,7 @@
       'E-mail: ' + data.get('email'),
       'Postcode & plaats: ' + data.get('postcode'),
       'Interesse in model: ' + data.get('model'),
+      'Aansluitpakket: ' + (data.get('pakket') || 'Nog niet zeker'),
       'Gewenste dienst(en): ' + (diensten.length ? diensten.join(', ') : 'Nog te bepalen'),
       'Gewenste toebehoren: ' + (toebehoren.length ? toebehoren.join(', ') + ' (prijs op aanvraag)' : 'Geen'),
       'Voorkeursmoment: ' + data.get('moment'),

@@ -920,16 +920,19 @@
   /* scroll-spy nav */
   var sections = ['quickscan','modellen','tarieven','toebehoren','werkwijze','intake'].map(function(id){ return document.getElementById(id); });
   var links = Array.prototype.slice.call(document.querySelectorAll('#navLinks a'));
-  if('IntersectionObserver' in window){
-    var obs = new IntersectionObserver(function(entries){
-      entries.forEach(function(entry){
-        if(entry.isIntersecting){
-          links.forEach(function(l){ l.classList.toggle('is-active', l.getAttribute('href') === '#' + entry.target.id); });
-        }
-      });
-    }, { rootMargin:'-40% 0px -50% 0px' });
-    sections.forEach(function(s){ if(s) obs.observe(s); });
+  function updateActiveLink(){
+    var threshold = window.innerHeight * 0.35;
+    var atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
+    var current = null;
+    sections.forEach(function(s){
+      if(s && s.getBoundingClientRect().top <= threshold) current = s;
+    });
+    if(atBottom) current = sections[sections.length - 1];
+    links.forEach(function(l){ l.classList.toggle('is-active', !!current && l.getAttribute('href') === '#' + current.id); });
   }
+  window.addEventListener('scroll', updateActiveLink, { passive:true });
+  window.addEventListener('resize', updateActiveLink);
+  updateActiveLink();
 
   /* hero pointer tilt */
   var reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;

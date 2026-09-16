@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Alle modellen &amp; toebehoren — Glacio Klimaattechniek</title>
+<meta name="description" content="Het volledige assortiment airco's van Glacio: alle merken, vermogens en sets, inclusief plaatsing. Plus toebehoren voor een complete installatie.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;500;700;800;900&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="/shared.css">
+<style>
+  .page-head{ background:var(--hero-bg); color:var(--hero-ink); padding-block:clamp(2.5rem,5vw,3.5rem); }
+  .page-head .eyebrow{ color:var(--ice); }
+  .page-head h1{ font-size:clamp(1.8rem,3.4vw,2.5rem); margin-top:.5rem; }
+  .page-head p{ color:var(--hero-muted); margin-top:.7rem; max-width:60ch; }
+  .page-head__stats{ display:flex; gap:1.6rem; flex-wrap:wrap; margin-top:1.4rem; font-family:var(--font-mono); font-size:.8rem; color:var(--hero-muted); }
+  .page-head__stats b{ display:block; color:var(--hero-ink); font-family:var(--font-display); font-size:1.2rem; }
+
+  .tabs{ display:flex; gap:.4rem; border-bottom:1px solid var(--border); margin-bottom:1.6rem; overflow-x:auto; }
+  .tab{ background:none; border:0; border-bottom:2px solid transparent; padding:.8rem 1rem; font:inherit; font-weight:600; color:var(--muted); cursor:pointer; white-space:nowrap; }
+  .tab.is-active{ color:var(--ink); border-color:var(--accent); }
+  .tab:focus-visible{ outline:2px solid var(--accent-bright); outline-offset:-2px; }
+
+  .filters{ display:grid; grid-template-columns:2fr repeat(4,1fr); gap:.7rem; margin-bottom:1.2rem; }
+  @media (max-width:900px){ .filters{ grid-template-columns:1fr 1fr; } }
+  @media (max-width:560px){ .filters{ grid-template-columns:1fr; } }
+  .filters input, .filters select{
+    width:100%; padding:.7rem .9rem; border:1px solid var(--border); border-radius:10px; background:var(--surface); color:var(--ink);
+    font:inherit; font-size:.92rem;
+  }
+  .filters input:focus, .filters select:focus{ outline:2px solid var(--accent-bright); outline-offset:1px; }
+  .filters__meta{ display:flex; justify-content:space-between; align-items:center; gap:1rem; flex-wrap:wrap; margin-bottom:1rem; font-size:.85rem; color:var(--muted); }
+  .filters__meta button{ background:none; border:0; color:var(--accent); font:inherit; font-size:.85rem; cursor:pointer; text-decoration:underline; }
+
+  .cat-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:1rem; }
+  .cat-card{
+    display:flex; flex-direction:column; background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:1.2rem 1.2rem 1.1rem;
+    transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+  }
+  .cat-card:hover{ transform:translateY(-3px); box-shadow:var(--shadow-2); border-color:var(--accent); }
+  .cat-card__top{ display:flex; justify-content:space-between; gap:.6rem; align-items:flex-start; }
+  .cat-card__brand{ font-family:var(--font-mono); font-size:.66rem; letter-spacing:.1em; text-transform:uppercase; color:var(--accent); font-weight:600; }
+  .cat-card__status{ font-family:var(--font-mono); font-size:.62rem; letter-spacing:.06em; text-transform:uppercase; padding:.2rem .5rem; border-radius:999px; border:1px solid var(--border); color:var(--muted); white-space:nowrap; }
+  .cat-card__status.is-actie{ background:var(--accent); color:#fff; border-color:var(--accent); }
+  .cat-card__status.is-uit{ opacity:.7; }
+  .cat-card__name{ font-family:var(--font-display); font-size:1rem; font-weight:700; margin:.5rem 0 .1rem; line-height:1.3; }
+  .cat-card__type{ font-size:.8rem; color:var(--muted); }
+  .cat-card__specs{ list-style:none; margin:.8rem 0 .9rem; padding:0; display:grid; gap:.3rem; }
+  .cat-card__specs li{ display:flex; justify-content:space-between; gap:.6rem; font-size:.78rem; color:var(--muted); font-family:var(--font-mono); border-bottom:1px dashed var(--border); padding-bottom:.25rem; }
+  .cat-card__specs li span:last-child{ color:var(--ink); text-align:right; }
+  .cat-card__price{ margin-top:auto; font-family:var(--font-mono); font-size:1.1rem; font-weight:700; font-variant-numeric:tabular-nums; }
+  .cat-card__price small{ display:block; font-family:var(--font-body); font-weight:400; color:var(--muted); font-size:.7rem; }
+  .cat-card .btn{ margin-top:.8rem; width:100%; justify-content:center; font-size:.85rem; padding:.6rem 1rem; }
+  .cat-card.is-uit .btn{ opacity:.55; pointer-events:none; }
+
+  .acc-group{ margin-bottom:2rem; }
+  .acc-group h2{ font-size:1.15rem; margin-bottom:.8rem; }
+  .acc-list{ list-style:none; margin:0; padding:0; border:1px solid var(--border); border-radius:14px; overflow:hidden; background:var(--surface); }
+  .acc-list li{ display:flex; justify-content:space-between; gap:1rem; align-items:center; padding:.7rem 1rem; border-bottom:1px solid var(--border); font-size:.88rem; }
+  .acc-list li:last-child{ border-bottom:0; }
+  .acc-list li .p{ font-family:var(--font-mono); font-size:.8rem; white-space:nowrap; color:var(--ink); }
+  .acc-list li .p.aanvraag{ color:var(--muted); }
+  .acc-list li.is-uit{ color:var(--muted); }
+  .empty{ text-align:center; color:var(--muted); padding:3rem 1rem; }
+  .more{ display:flex; justify-content:center; margin-top:1.6rem; }
+  [hidden]{ display:none !important; }
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container site-header__row">
+    <a class="brand" href="/"><span class="brand__mark">G</span><span class="brand__word">GLACIO</span></a>
+    <ul class="nav__links" id="navLinks">
+      <li><a href="/#quickscan">Quickscan</a></li>
+      <li><a href="/modellen" class="is-active">Modellen</a></li>
+      <li><a href="/#tarieven">Tarieven</a></li>
+      <li><a href="/#toebehoren">Toebehoren</a></li>
+      <li><a href="/#werkwijze">Werkwijze</a></li>
+      <li><a href="/#intake">Plan intake</a></li>
+    </ul>
+    <div class="header__actions">
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Wissel tussen licht en donker thema">◐</button>
+      <a class="btn btn--primary" href="/#intake" style="padding:.6rem 1.1rem;font-size:.85rem;">Plan intake</a>
+      <button class="nav-toggle" id="navToggle" type="button" aria-label="Menu openen" aria-expanded="false" aria-controls="navLinks"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="page-head">
+    <div class="container">
+      <p class="eyebrow">Het volledige assortiment</p>
+      <h1>Alle modellen &amp; toebehoren.</h1>
+      <p>Elke airco hieronder leveren én plaatsen we, met vaste richtprijs inclusief montage. Zoek op merk, vermogen of type — of laat de <a href="/#quickscan" style="color:var(--ice)">quickscan</a> voor u kiezen.</p>
+      <div class="page-head__stats">
+        <div><b id="statProd">–</b>airco-systemen</div>
+        <div><b id="statMerk">–</b>merken</div>
+        <div><b id="statToeb">–</b>toebehoren</div>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding-block:2rem 4rem;">
+    <div class="container">
+      <div class="tabs" role="tablist">
+        <button class="tab is-active" role="tab" data-tab="aircos" aria-selected="true">Airco's</button>
+        <button class="tab" role="tab" data-tab="toebehoren" aria-selected="false">Toebehoren</button>
+      </div>
+
+      <div id="panelAircos">
+        <div class="filters">
+          <input type="search" id="fZoek" placeholder="Zoek op model, merk of serie…" aria-label="Zoeken">
+          <select id="fMerk" aria-label="Merk"><option value="">Alle merken</option></select>
+          <select id="fType" aria-label="Type"><option value="">Alle types</option></select>
+          <select id="fKw" aria-label="Vermogen">
+            <option value="">Elk vermogen</option>
+            <option value="0-3">tot 3 kW (≈ tot 30 m²)</option>
+            <option value="3-4.5">3 – 4,5 kW (≈ 30 – 45 m²)</option>
+            <option value="4.5-6">4,5 – 6 kW (≈ 45 – 60 m²)</option>
+            <option value="6-99">6 kW en meer</option>
+          </select>
+          <select id="fSort" aria-label="Sorteren">
+            <option value="prijs-asc">Prijs: laag → hoog</option>
+            <option value="prijs-desc">Prijs: hoog → laag</option>
+            <option value="kw-asc">Vermogen: laag → hoog</option>
+            <option value="merk">Merk A → Z</option>
+          </select>
+        </div>
+        <div class="filters__meta">
+          <span id="fCount"></span>
+          <label style="display:flex;gap:.4rem;align-items:center;"><input type="checkbox" id="fVoorraad" checked> alleen op voorraad</label>
+          <button type="button" id="fReset">Filters wissen</button>
+        </div>
+        <div class="cat-grid" id="catGrid"></div>
+        <p class="empty" id="catEmpty" hidden>Geen modellen gevonden met deze filters.</p>
+        <div class="more" id="catMore" hidden><button class="btn btn--outline" type="button" id="btnMore">Toon meer modellen</button></div>
+      </div>
+
+      <div id="panelToebehoren" hidden>
+        <div class="filters" style="grid-template-columns:1fr;">
+          <input type="search" id="tZoek" placeholder="Zoek in toebehoren…" aria-label="Zoeken in toebehoren">
+        </div>
+        <p class="filters__meta">Toebehoren worden per installatie op maat begroot; prijzen bevestigen we bij de intake. Waar een prijs staat, is die inclusief btw.</p>
+        <div id="accGroups"></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer__row">
+      <a class="brand" href="/"><span class="brand__mark">G</span><span class="brand__word">GLACIO</span></a>
+      <span style="font-size:.82rem;color:var(--muted);">© 2026 Glacio Klimaattechniek</span>
+    </div>
+    <p class="footer__note">Richtprijzen zijn indicatief, inclusief btw en standaardplaatsing; het definitieve voorstel ontvangt u na de gratis intake. Geschikte oppervlakte is een indicatie (±1 kW per 10 m²).</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  /* theme + mobile nav (zelfde gedrag als homepage) */
+  var root = document.documentElement;
+  try{ var saved = localStorage.getItem('glacio-theme'); if(saved) root.setAttribute('data-theme', saved); }catch(e){}
+  document.getElementById('themeToggle').addEventListener('click', function(){
+    var cur = root.getAttribute('data-theme');
+    var next = cur === 'dark' ? 'light' : (cur === 'light' ? 'dark' : (matchMedia('(prefers-color-scheme: dark)').matches ? 'light' : 'dark'));
+    root.setAttribute('data-theme', next);
+    try{ localStorage.setItem('glacio-theme', next); }catch(e){}
+  });
+  var navToggle = document.getElementById('navToggle'), navLinks = document.getElementById('navLinks');
+  navToggle.addEventListener('click', function(){
+    var open = !navLinks.classList.contains('is-open');
+    navLinks.classList.toggle('is-open', open);
+    navToggle.setAttribute('aria-expanded', String(open));
+  });
+
+  var PAGE = 24;
+  var all = [], toeb = [], shown = PAGE;
+  var fZoek = document.getElementById('fZoek'), fMerk = document.getElementById('fMerk'), fType = document.getElementById('fType'),
+      fKw = document.getElementById('fKw'), fSort = document.getElementById('fSort'), fVoorraad = document.getElementById('fVoorraad');
+  var grid = document.getElementById('catGrid'), empty = document.getElementById('catEmpty'), more = document.getElementById('catMore');
+
+  function euro(n){ return '€ ' + n.toLocaleString('nl-NL'); }
+  function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+  function readState(){
+    var q = new URLSearchParams(location.search);
+    fZoek.value = q.get('q') || ''; fMerk.value = q.get('merk') || ''; fType.value = q.get('type') || '';
+    fKw.value = q.get('kw') || ''; fSort.value = q.get('sort') || 'prijs-asc';
+    if(q.get('tab') === 'toebehoren') switchTab('toebehoren');
+  }
+  function writeState(){
+    var q = new URLSearchParams();
+    if(fZoek.value) q.set('q', fZoek.value); if(fMerk.value) q.set('merk', fMerk.value); if(fType.value) q.set('type', fType.value);
+    if(fKw.value) q.set('kw', fKw.value); if(fSort.value !== 'prijs-asc') q.set('sort', fSort.value);
+    history.replaceState(null, '', q.toString() ? '?' + q : location.pathname);
+  }
+
+  function filtered(){
+    var q = fZoek.value.trim().toLowerCase();
+    var kw = fKw.value ? fKw.value.split('-').map(Number) : null;
+    var list = all.filter(function(p){
+      if(fVoorraad.checked && p.status === 'Uitverkocht') return false;
+      if(fMerk.value && p.merk !== fMerk.value) return false;
+      if(fType.value && p.type !== fType.value) return false;
+      if(kw && !(p.kw >= kw[0] && p.kw < kw[1])) return false;
+      if(q && (p.merk + ' ' + p.model + ' ' + p.naam).toLowerCase().indexOf(q) === -1) return false;
+      return true;
+    });
+    var s = fSort.value;
+    list.sort(function(a,b){
+      if(s === 'prijs-desc') return b.prijs - a.prijs;
+      if(s === 'kw-asc') return (a.kw||0) - (b.kw||0) || a.prijs - b.prijs;
+      if(s === 'merk') return a.merk.localeCompare(b.merk) || a.prijs - b.prijs;
+      return a.prijs - b.prijs;
+    });
+    return list;
+  }
+
+  function card(p){
+    var uit = p.status === 'Uitverkocht';
+    var statusCls = p.status === 'Actie' ? 'is-actie' : (uit ? 'is-uit' : '');
+    var title = p.titel || (p.model ? p.merk + ' ' + p.model : p.naam);
+    return '<article class="cat-card' + (uit ? ' is-uit' : '') + '">' +
+      '<div class="cat-card__top"><span class="cat-card__brand">' + esc(p.merk) + '</span><span class="cat-card__status ' + statusCls + '">' + esc(p.status) + '</span></div>' +
+      '<h3 class="cat-card__name">' + esc(title) + '</h3>' +
+      '<p class="cat-card__type">' + esc(p.type) + (p.wifi === 'Ja' ? ' · WiFi' : '') + '</p>' +
+      '<ul class="cat-card__specs">' +
+        '<li><span>Vermogen</span><span>' + (p.kw ? p.kw.toLocaleString('nl-NL') + ' kW' : '–') + (p.btu ? ' / ' + p.btu.toLocaleString('nl-NL') + ' Btu' : '') + '</span></li>' +
+        '<li><span>Geschikt voor</span><span>' + (p.m2 ? 'tot ±' + p.m2 + ' m²' : '–') + '</span></li>' +
+        '<li><span>Functie</span><span>' + esc(p.functie === 'Niet vermeld' ? 'Zie intake' : p.functie) + '</span></li>' +
+        '<li><span>Label</span><span>' + (p.label || '–') + '</span></li>' +
+      '</ul>' +
+      '<p class="cat-card__price">' + euro(p.prijs) + '<small>richtprijs, incl. btw &amp; plaatsing</small></p>' +
+      '<a class="btn btn--primary" href="/?model=' + encodeURIComponent(title) + '#intake">' + (uit ? 'Tijdelijk uitverkocht' : 'Kies dit model') + '</a>' +
+    '</article>';
+  }
+
+  function render(){
+    var list = filtered();
+    document.getElementById('fCount').textContent = list.length + ' van ' + all.length + ' modellen';
+    grid.innerHTML = list.slice(0, shown).map(card).join('');
+    empty.hidden = list.length > 0;
+    more.hidden = list.length <= shown;
+    writeState();
+  }
+  function reset(){ shown = PAGE; render(); }
+
+  function renderToeb(){
+    var q = document.getElementById('tZoek').value.trim().toLowerCase();
+    var groups = {};
+    toeb.forEach(function(t){
+      if(q && t.naam.toLowerCase().indexOf(q) === -1) return;
+      (groups[t.categorie] = groups[t.categorie] || []).push(t);
+    });
+    var html = Object.keys(groups).sort().map(function(g){
+      return '<div class="acc-group"><h2>' + esc(g) + ' <span style="color:var(--muted);font-weight:400;font-size:.85rem;">(' + groups[g].length + ')</span></h2><ul class="acc-list">' +
+        groups[g].map(function(t){
+          return '<li class="' + (t.status === 'Uitverkocht' ? 'is-uit' : '') + '"><span>' + esc(t.naam) + (t.status === 'Uitverkocht' ? ' <em style="font-size:.75rem;">(uitverkocht)</em>' : '') + '</span>' +
+            '<span class="p ' + (t.prijs ? '' : 'aanvraag') + '">' + (t.prijs ? euro(t.prijs) : 'op aanvraag') + '</span></li>';
+        }).join('') + '</ul></div>';
+    }).join('');
+    document.getElementById('accGroups').innerHTML = html || '<p class="empty">Niets gevonden.</p>';
+  }
+
+  function switchTab(name){
+    document.querySelectorAll('.tab').forEach(function(t){
+      var on = t.getAttribute('data-tab') === name;
+      t.classList.toggle('is-active', on); t.setAttribute('aria-selected', String(on));
+    });
+    document.getElementById('panelAircos').hidden = name !== 'aircos';
+    document.getElementById('panelToebehoren').hidden = name !== 'toebehoren';
+  }
+  document.querySelectorAll('.tab').forEach(function(t){ t.addEventListener('click', function(){ switchTab(t.getAttribute('data-tab')); }); });
+
+  fetch('/data/producten.json').then(function(r){ return r.json(); }).then(function(d){
+    all = d.producten; toeb = d.toebehoren;
+    var merken = {}; all.forEach(function(p){ merken[p.merk] = (merken[p.merk]||0) + 1; });
+    Object.keys(merken).sort().forEach(function(m){ fMerk.insertAdjacentHTML('beforeend', '<option value="' + esc(m) + '">' + esc(m) + ' (' + merken[m] + ')</option>'); });
+    var types = {}; all.forEach(function(p){ types[p.type] = 1; });
+    Object.keys(types).sort().forEach(function(t){ fType.insertAdjacentHTML('beforeend', '<option value="' + esc(t) + '">' + esc(t) + '</option>'); });
+    document.getElementById('statProd').textContent = all.length;
+    document.getElementById('statMerk').textContent = Object.keys(merken).length;
+    document.getElementById('statToeb').textContent = toeb.length;
+    readState(); render(); renderToeb();
+  });
+
+  [fMerk, fType, fKw, fSort, fVoorraad].forEach(function(el){ el.addEventListener('change', reset); });
+  fZoek.addEventListener('input', reset);
+  document.getElementById('tZoek').addEventListener('input', renderToeb);
+  document.getElementById('fReset').addEventListener('click', function(){
+    fZoek.value = ''; fMerk.value = ''; fType.value = ''; fKw.value = ''; fSort.value = 'prijs-asc'; fVoorraad.checked = true; reset();
+  });
+  document.getElementById('btnMore').addEventListener('click', function(){ shown += PAGE; render(); });
+})();
+</script>
+</body>
+</html>
